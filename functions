@@ -1,0 +1,211 @@
+#!/usr/bin/bash
+
+# vim:fileencoding=utf-8:foldmethod=marker
+
+# functions for bashrc
+#
+# author: RilCritch
+
+# show the list of packages that need this package - depends mpv as example
+depends() {
+	search=$(echo "$1")
+	sudo pacman -Sii $search | grep "Required" | sed -e "s/Required By     : //g" | sed -e "s/  /\n/g"
+}
+
+# navigation moving up directories
+up() {
+	local d=""
+	local limit="$1"
+
+	# Default to limit of 1
+	if [ -z "$limit" ] || [ "$limit" -le 0 ]; then
+		limit=1
+	fi
+
+	for ((i = 1; i <= limit; i++)); do
+		d="../$d"
+	done
+
+	# perform cd. Show error if cd fails
+	if ! cd "$d"; then
+		echo "Couldn't go up $limit dirs."
+	fi
+}
+
+# EXtractor for all kinds of archives
+# usage: ex <file>
+ex() {
+	if [ -f $1 ]; then
+		case $1 in
+		*.tar.bz2) tar xf $1 ;;
+		*.tar.gz) tar xzf $1 ;;
+		*.bz2) bunzip2 $1 ;;
+		*.rar) unrar x $1 ;;
+		*.gz) gunzip $1 ;;
+		*.tar) tar xf $1 ;;
+		*.tbz2) tar xf $1 ;;
+		*.tgz) tar xzf $1 ;;
+		*.zip) unzip $1 ;;
+		*.Z) uncompress $1 ;;
+		*.7z) 7z x $1 ;;
+		*.deb) ar x $1 ;;
+		*.tar.xz) tar xf $1 ;;
+		*.tar.zst) tar xf $1 ;;
+		*) echo "'$1' cannot be extracted via ex()" ;;
+		esac
+	else
+		echo "'$1' is not a valid file"
+	fi
+}
+
+# get a color palette for an image
+palette() {
+	img=$1
+
+	vimg $img
+
+	# hex values
+	~/mydots/applications/okolors -k 10 -w 0.01 -n 3 -l 10,30,50,70 -s l $img
+
+	# swatch
+	~/mydots/applications/okolors -k 10 -w 0.01 -n 3 -l 10,30,50,70 -s l -o swatch $img
+}
+
+## fzf functions {{{
+
+# fast cd - basic
+cdf() {
+	choice=$(find $HOME -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
+
+	if [ -n "$choice" ]; then
+		cd $choice
+		echo
+		echo -n "Now in "
+		echo "'$(pwd)'" | clr cyan
+		lineacross | clr
+		exa -a --group-directories-first --icons
+	fi
+}
+
+# fast cd - verbose and clear screen
+ccdf() {
+	choice=$(find $HOME -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
+
+	if [ -n "$choice" ]; then
+		cd $choice
+		clear
+		sparky | clr blue
+		lineacross | clr
+		echo -n "Now in "
+		echo "$(pwd)" | clr cyan
+		lineacross | clr
+		exa -la --group-directories-first --icons --grid --no-user --no-filesize --no-permissions --time-style="iso"
+	fi
+}
+
+# fast cd on root - basic
+cdfr() {
+	sudo -v
+	choice=$(sudo find / -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
+
+	if [ -n "$choice" ]; then
+		cd $choice
+		echo -n "Now in "
+		echo "$(pwd)" | clr cyan
+		lineacross | clr
+		exa -a --group-directories-first --icons
+	fi
+}
+
+# fast cd on root - verbose and clear screen
+ccdfr() {
+	sudo -v
+	choice=$(sudo find / -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
+
+	if [ -n "$choice" ]; then
+		cd $choice
+		clear
+		sparky | clr blue
+		lineacross | clr
+		echo -n "Now in "
+		echo "$(pwd)" | clr cyan
+		lineacross | clr
+		exa -la --group-directories-first --icons --grid --no-user --no-filesize
+	fi
+}
+
+# pacman searching
+pacf() {
+	choice=$(pacman -Slq | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'pacman -Si {}')
+
+	if [ -n "$choice" ]; then
+		echo "Installing $choice" | clr green
+		sudo pacman -S $choice
+	fi
+}
+
+# AUR searching
+aurf() {
+	choice=$(yay -a -Slq | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'yay -Si {}')
+
+	if [ -n "$choice" ]; then
+		echo "Installing $choice" | clr green
+		yay $choice
+	fi
+}
+
+# flatpak searching
+flatf() {
+	choice=$(flatpak remote-ls flathub | awk '{ printf "%s %s\n", $1, $2, $3 }' | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview $'flatpak remote-info flathub "$(echo {} | awk \'{printf "%s", $2}\')"')
+
+	if [ -n "$choice" ]; then
+		echo "Installing $choice" | clr green
+		flatpak install flathub $choice
+	fi
+}
+
+# man page searching
+manf() {
+	choice=$(\man -k . | awk -F ' - ' '{print $1}' | fzf -q "$1" --prompt='Man Pages ▶ ' --pointer='󱦰' --header-first --reverse --preview $'echo {} | tr -d \'()\' | awk \'{printf "%s ", $2} {print $1}\' | xargs -r man | ccat --color="always" | less -R' | tr -d ' ')
+
+	if [ -n "$choice" ]; then
+		\man $choice | ccat --color="always" | less -R
+	fi
+}
+
+# neovim runner
+# nvims () {
+#     return
+# }
+#
+alias nva="NVIM_APPNAME=astro-nvim nvim"
+alias nvc="NVIM_APPNAME=nv-chad nvim"
+alias nvl="NVIM_APPNAME=lazy-nvim nvim"
+alias nvf="NVIM_APPNAME=from-scratch nvim"
+
+snv() {
+	items=("default" "from-scratch" "lazy-nvim" "astro-nvim" "nv-chad" "cosmic-nvim")
+	config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config  " --exit-0)
+	if [[ -z $config ]]; then
+		# echo "Nothing selected"
+		return 0
+	elif [[ $config == "default" ]]; then
+		config=""
+	fi
+	NVIM_APPNAME=$config nvim $@
+}
+
+# run alias - didnt work
+# aliasf () {
+#   alias_def=$(alias | sed 's/alias //g' | fzf)
+#
+#   if [ -n "$alias_def" ]; then
+#     alias_to_run=$($alias_def | cut -d'=' -f1)
+#     echo "Running alias: $alias_to_run"
+#     exec $alias_to_run
+#   fi
+# }
+#
+
+# }}}
+# vim: ts=4 sts=4 sw=4 et

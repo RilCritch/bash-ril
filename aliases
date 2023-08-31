@@ -1,0 +1,322 @@
+#!/usr/bin/bash
+
+# vim:fileencoding=utf-8:foldmethod=marker
+
+# Bash aliases for RilCritch's bashrc
+#
+# author: RilCritch
+
+## terminal fun {{{
+
+# screen savers
+alias rmatrix='cxxmatrix --frame-rate 45 --no-diffuse --preserve-background'
+
+# pretty output
+alias cs='colorscript -e'
+alias line='lineacross | clr'
+alias spark='sparky | clr'
+
+# reminders
+alias rsh="reminders.sh"
+alias prsh="print-reminders.sh"
+
+# }}}
+
+## list - exa {{{
+
+# base
+alias ls='exa --group-directories-first --icons'
+alias sl='exa --group-directories-first --icons'
+alias lsa='exa -a --group-directories-first --icons'
+
+alias ll='exa -l --group-directories-first --grid --no-filesize --icons --no-user --no-filesize'
+alias lla='exa -la --group-directories-first --grid --no-filesize --icons --no-user --no-filesize'
+
+alias lst='exa --icons && exa -T --icons'
+alias lsr='exa -R --icons -L=2'
+
+# pretty
+alias sls='lineacross | clr && exa --group-directories-first --icons && lineacross | clr'
+alias slsa='lineacross | clr && exa -a --group-directories-first --icons && lineacross | clr'
+
+alias sll='lineacross | clr && exa -l --group-directories-first --grid --no-filesize --icons --no-user && lineacross | clr'
+alias slla='lineacross | clr && exa -la --group-directories-first --grid --no-filesize --icons --no-user && lineacross | clr'
+
+alias slst='lineacross | clr && exa -T -L=2 --icons && lineacross | clr'
+alias slsr='lineacross | clr && exa -R -L=2 --icons && lineacross | clr'
+
+# }}}
+
+## clear {{{
+
+# basic
+alias cc='clear'
+alias cca='clear &&'
+
+# info
+alias ccda='clear && pwd &&'
+
+# pretty
+alias c="clear && sparky | clr blue && lineacross | clr"
+alias ca="clear && sparky | clr blue && lineacross | clr &&"
+
+# }}}
+
+## directory / file management {{{
+
+# Check out functions for cool cd fuzzy find
+
+# Use neovim and oil.nvim as a file manager
+alias fm="nvim -c Oil"
+
+# my corne firmware
+alias keeb="cd /home/rc/.config/qmk/keyboards/crkbd/rev1/keymaps/RilCritch/"
+
+# }}}
+
+## applications {{{
+
+# lazygit
+alias lg="lazygit"
+alias lgmd="lazygit -p $HOME/mydots/"
+alias lgnv="lazygit -p $HOME/mydots/config/nvim/custom/"
+
+# wally - zsa keyboard flasher
+alias wally="wally-cli"
+alias wal="wally-cli"
+
+# glow - markdown renderer for terminal
+alias gl="glow"
+
+# neovim
+alias rmswap="rm $HOME/.local/state/nvim/swap/*"
+
+# calculator
+alias calc="bc"
+
+# clipboard manager
+
+# counts - pipe stuff into these
+alias lines="wc -l"
+alias words="wc -w"
+
+# common flags
+alias cp="cp -i"
+alias rm="rm -I"
+alias mv="mv -i"
+alias mkdir="mkdir -p"
+
+# dmenu
+alias dmenu_run='dmenu_run -fn "MononokiNerdFont-32" -nb "#1e1e2e" -nf "#cdd6f4" -sb "#f5c2e7" -sf "#1e1e2e"'
+
+# }}}
+
+## programming {{{
+
+# python
+alias venv="virtualenv"
+alias py="python"
+alias rmpyc="rm -r __pycache__/"
+
+# deactivate venv
+alias dct="deactivate"
+
+# }}}
+
+## script utilities {{{
+
+# }}}
+
+## packages {{{
+
+# pacman
+alias pacman='pacman --color auto'
+alias pss='pacman -Ss'                           # search for pkgs
+alias sps='sudo pacman -S'                       # isntall specified pkgs
+alias spr='sudo pacman -R'                       # remove a pkg, safer
+alias sprs='sudo pacman -Rs'                     # remove pkgs and depencies, can be dangerous
+alias spqo='sudo pacman -Qo'                     # determines which pkgs owns a specific file
+alias psyu='sudo pacman -Syu'                    # update only standard pkgs
+alias update='sudo pacman -Syyu'                 # refresh pkg list and update standard pkgs
+alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphan pkgs
+
+# yay
+alias yss='yay -Ss'   # search for AUR pkgs
+alias ysua='yay -Sua' # update only AUR pkgs
+alias ysyu='yay -Syu' # update standard and AUR pkgs
+
+# paru
+alias pass='paru -Ss'       # search for aur pkgs
+alias pasua='paru -Sua'     # update only AUR pkgs
+alias updateall='paru -Syu' # updates standard and AUR pkgs
+
+# info
+alias listpkg='sudo pacman -Q | fzf'                         # list standard packages
+alias listorph='sudo pacman -Qtd | fzf'                      # list orphaned pkgs
+alias listaur='sudo pacman -Qm | fzf'                        # list AUR pkgs
+alias listpkgsize="expac -H M '%m\t%n' | sort -h | nl | fzf" # reads out pkgs and their sizes
+
+# python
+alias pxi='pipx install'
+alias pxs='pypisearch'
+
+# }}}
+
+## linux customization {{{
+
+# application for generating a color palette from images
+alias okolors='/home/rc/mydots/applications/okolors -n 3 -l 10,30,50,70 -s l'
+
+# }}}
+
+## file editing/viewing {{{
+
+# neovim
+alias nv='nvim'
+alias vim='vim'
+alias vi='nvim'
+alias sudonv='sudo -E -s nvim' # edit root protected files with nvim configuration
+alias nvimtutor="nvim -c Tutor"
+
+# viewing text
+alias cat='bat'
+alias man='batman'
+
+# images
+alias vimg='echo && kitty +kitten icat'
+
+# edit files
+alias ebash="$EDITOR $HOME/mydots/bashconf/.bashrc"
+alias ezsh="$EDITOR ~/.zshrc"
+alias efish="$EDITOR ~/.config/fish/config.fish"
+alias epacman="sudo $EDITOR /etc/pacman.conf"
+alias egrub="sudo $EDITOR /etc/default/grub"
+alias ecgrub="sudo $EDITOR /boot/grub/grub.cfg"
+alias esddm="sudo $EDITOR /etc/sddm.conf"
+alias ehostname="sudo $EDITOR /etc/hostname"
+
+# }}}
+
+## error logs {{{
+
+# applications
+alias qtilelogs="cd $HOME/.local/share/qtile/"
+
+# }}}
+
+## searching {{{
+
+# fzf
+alias fzf="fzf --color='border:0,pointer:5,bg+:-1,hl:7,hl+:4,fg:8,fg+:7,info:15,header:4,spinner:6' --header-first --reverse --prompt='▶ ' --pointer='󱦰' --no-scrollbar --height=~50% --layout=reverse --border" # defualts to make fzf look better
+alias fzfonts="fc-list | fzf"
+alias fzfall="find / -type f 2>/dev/null | fzf --preview 'bat --style=numbers --color=always {}' --header 'All Files' --header-first --reverse" # fzf all files
+
+# find
+alias sfn='sudo find/ -name' # search entire system for specified file
+
+# grep - colorize
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias rg="rg --sort path" # search content with ripgrep
+
+# }}}
+
+## system info {{{
+
+# shutdown or reboot
+alias ssn="sudo shutdown now" # system util
+alias sr="reboot"             # system util
+
+# hardware misc
+alias hw='hwinfo --short' # list all hardware
+alias screenres='xdpyinfo | grep dimensions'
+
+# disk
+alias df='df -h'  # disk usage
+alias du='du -sh' # simple disk usage on a specified file or dir
+
+# memory
+alias fre='free -mt' # memory usage
+
+# processes
+alias psa="ps auxf"                                      # list all processes
+alias psgrep="ps aux | grep -v grep | grep -i -e VSZ -e" # search for processes
+
+# audio
+alias audio="pactl info | grep 'Server Name'" # shceck what audio server is used
+
+# desktops
+alias xd="\ls /usr/share/xsessions"         #list installed xorg desktops
+alias xdw="\ls /usr/share/wayland-sessions" #list installed wayland desktops
+
+# issue checking
+alias microcode='grep . /sys/devices/system/cpu/vulnerabilities/*' #check vulnerabilities
+alias jctl="journalctl -p 3 -xb"                                   #view error message from journalctl
+alias lcalamares="bat /var/log/Calamares.log"                      # check calamares logs
+alias lpacman="bat /var/log/pacman.log"                            # check pacmanlogs
+alias lxorg="bat /var/log/Xorg.0.log"                              # check xorg logs
+alias lxorgo="bat /var/log/Xorg.0.log.old"                         # check old xorg logs
+alias sysfailed="systemctl list-units --failed"                    #check failed systemctl
+
+# }}}
+
+## window managers {{{
+
+# qtile
+alias qc="qtile check"
+
+# }}}
+
+## acrolinux {{{
+
+# applications
+alias adt="arcolinux-desktop-trasher"
+alias abl="arcolinux-betterlockscreen"
+alias agm="arcolinux-get-mirrors"
+alias amr="arcolinux-mirrorlist-rank-info"
+alias aom="arcolinux-osbeck-as-mirror"
+alias ars="arcolinux-reflector-simple"
+alias atm="arcolinux-tellme"
+alias avs="arcolinux-vbox-share"
+alias awa="arcolinux-welcome-app"
+
+# fixes
+alias fix-permissions="sudo chown -R $USER:$USER ~/.config ~/.local"
+alias keyfix="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
+alias key-fix="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
+alias keys-fix="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
+alias fixkey="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
+alias fixkeys="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
+alias fix-key="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
+alias fix-keys="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
+alias fix-pacman-conf="/usr/local/bin/arcolinux-fix-pacman-conf"
+alias fix-pacman-keyserver="/usr/local/bin/arcolinux-fix-pacman-gpg-conf"
+alias fix-grub="/usr/local/bin/arcolinux-fix-grub"
+alias fixgrub="/usr/local/bin/arcolinux-fix-grub"
+
+# }}}
+
+## downloading {{{
+
+# youtube download
+alias yta-aac="yt-dlp --extract-audio --audio-format aac"
+alias yta-best="yt-dlp --extract-audio --audio-format best"
+alias yta-wav="yt-dlp --extract-audio --audio-format best"
+alias yta-flac="yt-dlp --extract-audio --audio-format flac"
+alias yta-mp3="yt-dlp --extract-audio --audio-format mp3"
+alias ytv-best="yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4"
+
+# }}}
+
+## shells {{{
+
+# bash
+alias csb='clear && source ~/.bashrc'
+
+# switching
+alias tobash="sudo chsh $USER -s /bin/bash && echo 'Now log out.'"
+alias tozsh="sudo chsh $USER -s /bin/zsh && echo 'Now log out.'"
+alias tofish="sudo chsh $USER -s /bin/fish && echo 'Now log out.'"
+
+# }}}

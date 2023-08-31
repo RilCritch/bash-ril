@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+# Simple set of bash variables to hold ansi escape sequences for my environment
+
+# Author: RilCrith
+
+# text color ##################################################################
+
+# regular colors
+black='\033[30m'
+red='\033[31m'
+green='\033[32m'
+yellow='\033[33m'
+blue='\033[34m'
+magenta='\033[35m'
+cyan='\033[36m'
+white='\033[37m'
+
+# light colors
+l_black='\033[90m'
+l_red='\033[91m'
+l_green='\033[92m'
+l_yellow='\033[93m'
+l_blue='\033[94m'
+l_magenta='\033[95m'
+l_cyan='\033[96m'
+l_white='\033[97m'
+
+###############################################################################
+
+# background color ############################################################
+
+# regular colors
+b_black='\033[40m'
+b_red='\033[41m'
+b_green='\033[42m'
+b_yellow='\033[43m'
+b_blue='\033[44m'
+b_magenta='\033[45m'
+b_cyan='\033[46m'
+b_white='\033[47m'
+
+# light colors
+b_l_black='\033[100m'
+b_l_red='\033[101m'
+b_l_green='\033[102m'
+b_l_yellow='\033[103m'
+b_l_blue='\033[104m'
+b_l_magenta='\033[105m'
+b_l_cyan='\033[106m'
+b_l_white='\033[107m'
+
+###############################################################################
+
+# text styles #################################################################
+
+reset='\033[0m'
+bold='\033[1m'
+dim='\033[2m'
+italic='\033[3m'
+underline='\033[4m'
+blink='\033[5m'
+reverse='\033[7m'
+hidden='\033[8m'
+strikethrough='\033[9m'
+
+###############################################################################

@@ -1,0 +1,36 @@
+#!/usr/bin/bash
+
+# vim:fileencoding=utf-8:foldmethod=marker
+
+# environment variables for bashrc
+#
+# author: RilCritch
+
+## directories {{{
+
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+# }}}
+
+## applications {{{
+
+export EXA_ICON_SPACING=1
+export FZF_DEFAULT_OPTS=""
+
+# }}}
+
+## window managers {{{
+
+# qtile
+
+# }}}
+
+## programming {{{
+
+# python
+export WORKON_HOME="$HOME/documents/programming/pyenvs"
+
+# }}}
