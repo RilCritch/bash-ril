@@ -163,7 +163,7 @@ alias pxs='pypisearch'   # searching for python packages
 # debian
 alias apt='nala'                                                 # replace apt with nala wrapper
 alias apti='sudo nala install'                                   # install packages for debian
-alias apts='nala search'                                         # search for debian packages
+alias apts='sudo nala search'                                    # search for debian packages
 alias aptup='sudo aptitude update && sudo aptitude full-upgrade' # refresh and update debian packages
 
 # }}}
