@@ -137,7 +137,7 @@ alias spr='sudo pacman -R'                       # remove a pkg, safer
 alias sprs='sudo pacman -Rs'                     # remove pkgs and depencies, can be dangerous
 alias spqo='sudo pacman -Qo'                     # determines which pkgs owns a specific file
 alias psyu='sudo pacman -Syu'                    # update only standard pkgs
-alias update='sudo pacman -Syyu'                 # refresh pkg list and update standard pkgs
+alias pacup='sudo pacman -Syyu'                  # refresh pkg list and update standard pkgs on arch
 alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphan pkgs
 
 # yay
@@ -157,8 +157,14 @@ alias listaur='sudo pacman -Qm | fzf'                        # list AUR pkgs
 alias listpkgsize="expac -H M '%m\t%n' | sort -h | nl | fzf" # reads out pkgs and their sizes
 
 # python
-alias pxi='pipx install'
-alias pxs='pypisearch'
+alias pxi='pipx install' # installing python packages with pipx
+alias pxs='pypisearch'   # searching for python packages
+
+# debian
+alias apt='nala'                                                 # replace apt with nala wrapper
+alias apti='sudo nala install'                                   # install packages for debian
+alias apts='nala search'                                         # search for debian packages
+alias aptup='sudo aptitude update && sudo aptitude full-upgrade' # refresh and update debian packages
 
 # }}}
 
