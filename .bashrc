@@ -89,4 +89,5 @@ eval "$(starship init bash)"
 
 # print-reminders.sh
 # print-reminders.sh && lineacross | clr blackL && neofetch
-print-reminders.sh && neofetch
+# print-reminders.sh && neofetch
+print-reminders.sh
