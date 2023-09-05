@@ -88,4 +88,5 @@ eval "$(starship init bash)"
 # echo "2. Create script for handling reminders and and editing and adding them" | clr green
 
 # print-reminders.sh
-print-reminders.sh && lineacross | clr blackL && pfetch
+# print-reminders.sh && lineacross | clr blackL && neofetch
+print-reminders.sh && neofetch
