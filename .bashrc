@@ -37,9 +37,9 @@ if [ -d "$HOME/.cargo/bin" ]; then
 	PATH="$HOME/.cargo/bin:$PATH"
 fi
 
-if which ruby >/dev/null && which gem >/dev/null; then
-	PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
-fi
+# if which ruby >/dev/null && which gem >/dev/null; then
+# 	PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+# fi
 
 #ignore upper and lowercase when TAB completion
 bind "set completion-ignore-case on"
@@ -57,10 +57,10 @@ shopt -s histappend     # do not overwrite history
 shopt -s expand_aliases # expand aliases
 
 # import bash configurations files
-[[ -f $HOME/mydots/bashconf/ansi_escape_sequences ]] && . $HOME/mydots/bashconf/ansi_escape_sequences
-[[ -f $HOME/mydots/bashconf/aliases ]] && . $HOME/mydots/bashconf/aliases
-[[ -f $HOME/mydots/bashconf/envvars ]] && . $HOME/mydots/bashconf/envvars
-[[ -f $HOME/mydots/bashconf/functions ]] && . $HOME/mydots/bashconf/functions
+[[ -f $HOME/Repos/bash-ril/ansi_escape_sequences ]] && . $HOME/Repos/bash-ril/ansi_escape_sequences
+[[ -f $HOME/Repos/bash-ril/aliases ]] && . $HOME/Repos/bash-ril/aliases
+[[ -f $HOME/Repos/bash-ril/envvars ]] && . $HOME/Repos/bash-ril/envvars
+[[ -f $HOME/Repos/bash-ril/functions ]] && . $HOME/Repos/bash-ril/functions
 
 #Generic color list
 {
@@ -90,4 +90,4 @@ eval "$(starship init bash)"
 # print-reminders.sh
 # print-reminders.sh && lineacross | clr blackL && neofetch
 # print-reminders.sh && neofetch
-print-reminders.sh
+# print-reminders.sh
