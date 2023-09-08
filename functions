@@ -81,8 +81,8 @@ cdf() {
 		cd $choice
 		echo
 		echo -n "Now in "
-		echo "'$(pwd)'" | clr cyan
-		lineacross | clr
+		echo "'$(pwd)'" | clr blue
+		lineacross | clr blackL
 		exa -a --group-directories-first --icons
 	fi
 }
@@ -94,11 +94,11 @@ ccdf() {
 	if [ -n "$choice" ]; then
 		cd $choice
 		clear
-		sparky | clr blue
-		lineacross | clr
+		sparky | clr blackL
+		lineacross | clr blackL
 		echo -n "Now in "
-		echo "$(pwd)" | clr cyan
-		lineacross | clr
+		echo "$(pwd)" | clr blue
+		lineacross | clr blackL
 		exa -la --group-directories-first --icons --grid --no-user --no-filesize --no-permissions --time-style="iso"
 	fi
 }
@@ -111,8 +111,8 @@ cdfr() {
 	if [ -n "$choice" ]; then
 		cd $choice
 		echo -n "Now in "
-		echo "$(pwd)" | clr cyan
-		lineacross | clr
+		echo "$(pwd)" | clr blue
+		lineacross | clr blackL
 		exa -a --group-directories-first --icons
 	fi
 }
@@ -125,11 +125,11 @@ ccdfr() {
 	if [ -n "$choice" ]; then
 		cd $choice
 		clear
-		sparky | clr blue
-		lineacross | clr
+		sparky | clr blackL
+		lineacross | clr blackL
 		echo -n "Now in "
-		echo "$(pwd)" | clr cyan
-		lineacross | clr
+		echo "$(pwd)" | clr blue
+		lineacross | clr blackL
 		exa -la --group-directories-first --icons --grid --no-user --no-filesize
 	fi
 }
@@ -165,13 +165,13 @@ flatf() {
 }
 
 # man page searching
-manf() {
-	choice=$(\man -k . | awk -F ' - ' '{print $1}' | fzf -q "$1" --prompt='Man Pages ▶ ' --pointer='󱦰' --header-first --reverse --preview $'echo {} | tr -d \'()\' | awk \'{printf "%s ", $2} {print $1}\' | xargs -r man | ccat --color="always" | less -R' | tr -d ' ')
-
-	if [ -n "$choice" ]; then
-		\man $choice | ccat --color="always" | less -R
-	fi
-}
+# manf() {
+# 	choice=$(\man -k . | awk -F ' - ' '{print $1}' | fzf -q "$1" --prompt='Man Pages ▶ ' --pointer='󱦰' --header-first --reverse --preview $'echo {} | tr -d \'()\' | awk \'{printf "%s ", $2} {print $1}\' | xargs -r man | ccat --color="always" | less -R' | tr -d ' ')
+# 
+# 	if [ -n "$choice" ]; then
+# 		\man $choice | ccat --color="always" | less -R
+# 	fi
+# }
 
 # neovim runner
 # nvims () {
