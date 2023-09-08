@@ -57,8 +57,8 @@ alias cca='clear &&'
 alias ccda='clear && pwd &&'
 
 # pretty
-alias c="clear && sparky | clr blue && lineacross | clr"
-alias ca="clear && sparky | clr blue && lineacross | clr &&"
+alias c="clear && sparky | clr blackL && lineacross | clr blackL"
+alias ca="clear && sparky | clr blackL && lineacross | clr blackL &&"
 
 # }}}
 
