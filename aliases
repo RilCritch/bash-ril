@@ -88,6 +88,9 @@ alias wal="wally-cli"
 # glow - markdown renderer for terminal
 alias gl="glow"
 
+# pwd
+alias pwd="pwd | clr blue"
+
 # neovim
 alias rmswap="rm $HOME/.local/state/nvim/swap/*"
 
@@ -107,7 +110,7 @@ alias mv="mv -i"
 alias mkdir="mkdir -p"
 
 # dmenu
-alias dmenu_run='dmenu_run -fn "MononokiNerdFont-32" -nb "#1e1e2e" -nf "#cdd6f4" -sb "#f5c2e7" -sf "#1e1e2e"'
+# alias dmenu_run='dmenu_run -fn "MononokiNerdFont-32" -nb "#1e1e2e" -nf "#cdd6f4" -sb "#f5c2e7" -sf "#1e1e2e"'
 
 # }}}
 
