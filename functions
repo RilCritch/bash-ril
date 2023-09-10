@@ -1,18 +1,19 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
-# vim:fileencoding=utf-8:foldmethod=marker
+# vim:fileencoding=utf-8:foldmethod=marker:filetype=bash
 
 # functions for bashrc
 #
 # author: RilCritch
 
-# show the list of packages that need this package - depends mpv as example
+# show the list of packages that need this package - depends mpv as example {{{
 depends() {
 	search=$(echo "$1")
 	sudo pacman -Sii $search | grep "Required" | sed -e "s/Required By     : //g" | sed -e "s/  /\n/g"
 }
+# }}}
 
-# navigation moving up directories
+# navigation moving up directories {{{
 up() {
 	local d=""
 	local limit="$1"
@@ -31,8 +32,9 @@ up() {
 		echo "Couldn't go up $limit dirs."
 	fi
 }
+# }}}
 
-# EXtractor for all kinds of archives
+# EXtractor for all kinds of archives {{{
 # usage: ex <file>
 ex() {
 	if [ -f $1 ]; then
@@ -57,8 +59,36 @@ ex() {
 		echo "'$1' is not a valid file"
 	fi
 }
+# }}}
 
-# get a color palette for an image
+# Recursive exa {{{
+# clear and recursive with size opt
+clsr() {
+	local size="$1"
+
+	# Default size of 2
+	if [ -z "$size" ] || [ "$size" -le 0 ]; then
+		size=2
+	fi
+
+	clear
+	exa -R --icons -L=$size
+}
+
+clst() {
+	local size="$1"
+
+	# Default size of 2
+	if [ -z "$size" ] || [ "$size" -le 0 ]; then
+		size=2
+	fi
+
+	clear
+	exa --icons && exa -T --icons -L=$size
+}
+# }}}
+
+# get a color palette for an image {{{
 palette() {
 	img=$1
 
@@ -70,9 +100,9 @@ palette() {
 	# swatch
 	~/mydots/applications/okolors -k 10 -w 0.01 -n 3 -l 10,30,50,70 -s l -o swatch $img
 }
+# }}}
 
-## fzf functions {{{
-
+# FZF cd {{{
 # fast cd - basic
 cdf() {
 	choice=$(find $HOME -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
@@ -97,7 +127,7 @@ ccdf() {
 		sparky | clr blackL
 		lineacross | clr blackL
 		echo -n "Now in "
-		echo "$(pwd)" | clr blue
+		echo -n "$(pwd)" | clr blue
 		lineacross | clr blackL
 		exa -la --group-directories-first --icons --grid --no-user --no-filesize --no-permissions --time-style="iso"
 	fi
@@ -128,12 +158,14 @@ ccdfr() {
 		sparky | clr blackL
 		lineacross | clr blackL
 		echo -n "Now in "
-		echo "$(pwd)" | clr blue
+		echo -n "$(pwd)" | clr blue
 		lineacross | clr blackL
 		exa -la --group-directories-first --icons --grid --no-user --no-filesize
 	fi
 }
+# }}}
 
+# FZF Arch packages {{{
 # pacman searching
 pacf() {
 	choice=$(pacman -Slq | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'pacman -Si {}')
@@ -153,8 +185,9 @@ aurf() {
 		yay $choice
 	fi
 }
+# }}}
 
-# flatpak searching
+# FZF flatpak {{{
 flatf() {
 	choice=$(flatpak remote-ls flathub | awk '{ printf "%s %s\n", $1, $2, $3 }' | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview $'flatpak remote-info flathub "$(echo {} | awk \'{printf "%s", $2}\')"')
 
@@ -163,21 +196,9 @@ flatf() {
 		flatpak install flathub $choice
 	fi
 }
+# }}}
 
-# man page searching
-# manf() {
-# 	choice=$(\man -k . | awk -F ' - ' '{print $1}' | fzf -q "$1" --prompt='Man Pages ▶ ' --pointer='󱦰' --header-first --reverse --preview $'echo {} | tr -d \'()\' | awk \'{printf "%s ", $2} {print $1}\' | xargs -r man | ccat --color="always" | less -R' | tr -d ' ')
-# 
-# 	if [ -n "$choice" ]; then
-# 		\man $choice | ccat --color="always" | less -R
-# 	fi
-# }
-
-# neovim runner
-# nvims () {
-#     return
-# }
-#
+# FZF neovim {{{
 alias nva="NVIM_APPNAME=astro-nvim nvim"
 alias nvc="NVIM_APPNAME=nv-chad nvim"
 alias nvl="NVIM_APPNAME=lazy-nvim nvim"
@@ -194,18 +215,6 @@ snv() {
 	fi
 	NVIM_APPNAME=$config nvim $@
 }
-
-# run alias - didnt work
-# aliasf () {
-#   alias_def=$(alias | sed 's/alias //g' | fzf)
-#
-#   if [ -n "$alias_def" ]; then
-#     alias_to_run=$($alias_def | cut -d'=' -f1)
-#     echo "Running alias: $alias_to_run"
-#     exec $alias_to_run
-#   fi
-# }
-#
-
 # }}}
+
 # vim: ts=4 sts=4 sw=4 et
