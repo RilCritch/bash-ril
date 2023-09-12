@@ -211,8 +211,6 @@ snv() {
 	if [[ -z $config ]]; then
 		# echo "Nothing selected"
 		return 0
-	elif [[ $config == "default" ]]; then
-		config=""
     else
         config="neovim/${config}"
 	fi
