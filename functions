@@ -205,7 +205,8 @@ alias nvl="NVIM_APPNAME=lazy-nvim nvim"
 alias nvf="NVIM_APPNAME=from-scratch nvim"
 
 snv() {
-	items=("default" "from-scratch" "lazy-nvim" "nv-chad" )
+	# items=("default" "from-scratch" "lazy-nvim" "nv-chad" )
+    items=$(\ls ~/.config/neovim/)
 	config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config   " --exit-0)
 	if [[ -z $config ]]; then
 		# echo "Nothing selected"
