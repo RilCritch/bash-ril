@@ -199,19 +199,21 @@ flatf() {
 # }}}
 
 # FZF neovim {{{
-alias nva="NVIM_APPNAME=astro-nvim nvim"
+# alias nva="NVIM_APPNAME=astro-nvim nvim"
 alias nvc="NVIM_APPNAME=nv-chad nvim"
 alias nvl="NVIM_APPNAME=lazy-nvim nvim"
 alias nvf="NVIM_APPNAME=from-scratch nvim"
 
 snv() {
-	items=("default" "from-scratch" "lazy-nvim" "astro-nvim" "nv-chad" "cosmic-nvim")
-	config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config  " --exit-0)
+	items=("default" "from-scratch" "lazy-nvim" "nv-chad" )
+	config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config   " --exit-0)
 	if [[ -z $config ]]; then
 		# echo "Nothing selected"
 		return 0
 	elif [[ $config == "default" ]]; then
 		config=""
+    else
+        config="neovim/${config}"
 	fi
 	NVIM_APPNAME=$config nvim $@
 }
