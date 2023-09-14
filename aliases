@@ -25,6 +25,7 @@ alias prsh="print-reminders.sh"
 ## list - exa {{{
 
 # base
+alias exa='eza'
 alias ls='exa --group-directories-first --icons'
 alias sl='exa --group-directories-first --icons'
 alias lsa='exa -a --group-directories-first --icons'
