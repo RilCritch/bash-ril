@@ -178,11 +178,11 @@ pacf() {
 
 # AUR searching
 aurf() {
-	choice=$(yay -a -Slq | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'yay -Si {}')
+	choice=$(paru -a -Slq | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'paru -Si {}')
 
 	if [ -n "$choice" ]; then
 		echo "Installing $choice" | clr green
-		yay $choice
+		paru $choice
 	fi
 }
 # }}}
