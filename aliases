@@ -79,8 +79,6 @@ alias keeb="cd /home/rc/.config/qmk/keyboards/crkbd/rev1/keymaps/RilCritch/"
 
 # lazygit
 alias lg="lazygit"
-alias lgmd="lazygit -p $HOME/mydots/"
-alias lgnv="lazygit -p $HOME/mydots/config/nvim/custom/"
 
 # wally - zsa keyboard flasher
 alias wally="wally-cli"
@@ -109,6 +107,9 @@ alias cp="cp -i"
 alias rm="rm -I"
 alias mv="mv -i"
 alias mkdir="mkdir -p"
+
+# git
+alias gll="gita ll"
 
 # dmenu
 # alias dmenu_run='dmenu_run -fn "MononokiNerdFont-32" -nb "#1e1e2e" -nf "#cdd6f4" -sb "#f5c2e7" -sf "#1e1e2e"'
