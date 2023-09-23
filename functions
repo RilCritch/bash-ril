@@ -85,7 +85,7 @@ clst() {
 
 	clear
 	# eza --icons && exa -T --icons -L=$size
-	eza --icons && exa -T --icons -L=$size
+	exa -T --icons -L=$size
 }
 # }}}
 
