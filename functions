@@ -72,7 +72,7 @@ clsr() {
 	fi
 
 	clear
-	exa -R --icons -L=$size
+	eza -R --icons -L=$size
 }
 
 clst() {
@@ -84,7 +84,8 @@ clst() {
 	fi
 
 	clear
-	exa --icons && exa -T --icons -L=$size
+	# eza --icons && exa -T --icons -L=$size
+	eza --icons && exa -T --icons -L=$size
 }
 # }}}
 
