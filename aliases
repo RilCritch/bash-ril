@@ -105,6 +105,7 @@ alias words="wc -w"
 # common flags
 alias cp="cp -i"
 alias rm="rm -I"
+alias rmr="rm -rI"
 alias mv="mv -i"
 alias mkdir="mkdir -p"
 
