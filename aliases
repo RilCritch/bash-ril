@@ -190,6 +190,10 @@ alias vi='nvim'
 alias sudonv='sudo -E -s nvim' # edit root protected files with nvim configuration
 alias nvimtutor="nvim -c Tutor"
 
+# markdown neovim config
+alias mdvim="NVIM_APPNAME=neovim/MDvim nvim"
+alias mdv="NVIM_APPNAME=neovim/MDvim nvim"
+
 # viewing text
 alias cat='bat'
 alias man='batman'
