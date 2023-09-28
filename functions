@@ -61,7 +61,7 @@ ex() {
 }
 # }}}
 
-# Recursive exa {{{
+# Recursive eza {{{
 # clear and recursive with size opt
 clsr() {
 	local size="$1"
@@ -72,7 +72,7 @@ clsr() {
 	fi
 
 	clear
-	eza -R --icons -L=$size
+	eza -R --icons -L="$size" --group-directories-first
 }
 
 clst() {
@@ -85,7 +85,7 @@ clst() {
 
 	clear
 	# eza --icons && exa -T --icons -L=$size
-	exa -T --icons -L=$size
+	exa -T --icons -L="$size" --group-directories-first
 }
 # }}}
 
