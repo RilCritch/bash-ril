@@ -38,7 +38,7 @@ if [ -d "$HOME/.cargo/bin" ]; then
 fi
 
 if [ -d "$HOME/.emacs.d/bin" ]; then
-  PATH="$HOME/.emacs.d/bin:$PATH"
+    PATH="$HOME/.emacs.d/bin:$PATH"
 fi
 
 # if which ruby >/dev/null && which gem >/dev/null; then
