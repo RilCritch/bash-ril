@@ -72,7 +72,7 @@ clsr() {
 	fi
 
 	clear
-	eza -R --icons -L="$size" --group-directories-first
+	exa -R --icons -L="$size" --group-directories-first
 }
 
 clst() {
