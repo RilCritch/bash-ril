@@ -241,12 +241,17 @@ alias rg="rg --sort path" # search content with ripgrep
 ## system info {{{
 
 # shutdown or reboot
-alias ssn="sudo shutdown now" # system util
-alias sr="reboot"             # system util
+alias ssn="sudo shutdown now" # shutdown
+alias sr="reboot"             # reboot
 
 # hardware misc
 alias hw='hwinfo --short' # list all hardware
 alias screenres='xdpyinfo | grep dimensions'
+
+# neofetch
+alias sysinfo="neofetch"
+alias nf="neofetch"
+alias fetch="neofetch --config none"
 
 # disk
 alias df='df -h'  # disk usage
