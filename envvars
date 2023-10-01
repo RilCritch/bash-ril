@@ -34,4 +34,7 @@ export FZF_DEFAULT_OPTS=""
 # python
 export WORKON_HOME="$HOME/documents/programming/pyenvs"
 
+# lua
+export LUVER_DIR="${LUVER_DIR:-"${XDG_DATA_HOME:-"${HOME}/.local/share"}/luver"}"
+
 # }}}
