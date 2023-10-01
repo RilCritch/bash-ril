@@ -90,8 +90,19 @@ shopt -s expand_aliases # expand aliases
 # Created by `pipx` on 2023-06-25 22:48:45
 export PATH="$PATH:/home/rc/.local/bin"
 
+# setup luver lua environment manager
+if [[ ! -d "${LUVER_DIR}/self" ]]; then
+	git clone --quiet https://github.com/MunifTanjim/luver.git "${LUVER_DIR}/self"
+fi
+
+source "${LUVER_DIR}/self/luver.bash"
+
 #starship
 eval "$(starship init bash)"
+
+# Use bash-completion, if available
+[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
+	. /usr/share/bash-completion/bash_completion
 
 # Start up -- used as reminders (create a script to add and remove reminders)
 # echo "Reminders:" | clr blue
