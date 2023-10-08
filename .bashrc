@@ -79,11 +79,11 @@ shopt -s expand_aliases # expand aliases
 	cR='[m'
 }
 
-# Created by `pipx` on 2023-06-25 22:48:45
-export PATH="$PATH:/home/rc/.local/bin"
-
 #starship
 eval "$(starship init bash)"
+
+# auto completion
+[[ -f $HOME/.local/share/bash-completion/gita-completion.bash ]] && . $HOME/.local/share/bash-completion/gita-completion.bash
 
 # Start up -- used as reminders (create a script to add and remove reminders)
 # echo "Reminders:" | clr blue
