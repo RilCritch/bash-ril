@@ -111,6 +111,7 @@ alias mkdir="mkdir -p"
 
 # git
 alias gll="gita ll"
+alias gls="gfold | grep -vi 'rilcritch'"
 
 # dmenu
 # alias dmenu_run='dmenu_run -fn "MononokiNerdFont-32" -nb "#1e1e2e" -nf "#cdd6f4" -sb "#f5c2e7" -sf "#1e1e2e"'
