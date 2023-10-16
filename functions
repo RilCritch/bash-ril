@@ -112,7 +112,7 @@ cdf() {
 		cd $choice
 		echo
 		echo -n "Now in "
-		echo "'$(pwd)'" | clr blue
+		echo "$(pwd)" | clr blue
 		lineacross | clr blackL
 		exa -a --group-directories-first --icons
 	fi

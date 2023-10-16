@@ -224,7 +224,7 @@ alias qtilelogs="cd $HOME/.local/share/qtile/"
 ## searching {{{
 
 # fzf
-alias fzf="fzf --color='border:0,pointer:5,bg+:-1,hl:7,hl+:4,fg:8,fg+:7,info:15,header:4,spinner:6' --header-first --reverse --prompt='▶ ' --pointer='󱦰' --no-scrollbar --height=~50% --layout=reverse --border" # defualts to make fzf look better
+alias fzf="fzf --color='border:0,pointer:3,bg+:-1,hl:-1,hl+:2,fg:8,fg+:7,info:15,header:4,spinner:3' --header-first --reverse --prompt='▶ ' --pointer='󱦰' --no-scrollbar --height=~50% --layout=reverse --border" # defualts to make fzf look better
 alias fzfonts="fc-list | fzf"
 alias fzfall="find / -type f 2>/dev/null | fzf --preview 'bat --style=numbers --color=always {}' --header 'All Files' --header-first --reverse" # fzf all files
 
