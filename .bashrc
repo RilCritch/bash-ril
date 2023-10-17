@@ -21,12 +21,18 @@ PS1='[\u@\h \W]\$ '
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# App and Script locations Locations
 if [ -d "$HOME/.bin" ]; then
 	PATH="$HOME/.bin:$PATH"
 fi
 
 if [ -d "$HOME/.local/bin" ]; then
 	PATH="$HOME/.local/bin:$PATH"
+fi
+
+
+if [ -d "$HOME/.local/rilbin" ]; then
+	PATH="$HOME/.local/rilbin:$PATH"
 fi
 
 if [ -d "$HOME/scripts" ]; then
@@ -61,29 +67,16 @@ shopt -s histappend     # do not overwrite history
 shopt -s expand_aliases # expand aliases
 
 # import bash configurations files
-[[ -f $HOME/Repos/bash-ril/ansi_escape_sequences ]] && . $HOME/Repos/bash-ril/ansi_escape_sequences
-[[ -f $HOME/Repos/bash-ril/aliases ]] && . $HOME/Repos/bash-ril/aliases
-[[ -f $HOME/Repos/bash-ril/envvars ]] && . $HOME/Repos/bash-ril/envvars
-[[ -f $HOME/Repos/bash-ril/functions ]] && . $HOME/Repos/bash-ril/functions
-
-#Generic color list
-{
-	c1='[31m'
-	c2='[32m'
-	c3='[33m'
-	c4='[34m'
-	c5='[35m'
-	c6='[36m'
-	c7='[37m'
-	c8='[38m'
-	cR='[m'
-}
+[[ -f $HOME/Repos/bash-ril/ansi_escape_sequences ]] && . ${HOME}/Repos/bash-ril/ansi_escape_sequences
+[[ -f $HOME/Repos/bash-ril/aliases ]] && . ${HOME}/Repos/bash-ril/aliases
+[[ -f $HOME/Repos/bash-ril/envvars ]] && . ${HOME}/Repos/bash-ril/envvars
+[[ -f $HOME/Repos/bash-ril/functions ]] && . ${HOME}/Repos/bash-ril/functions
 
 #starship
 eval "$(starship init bash)"
 
 # auto completion
-[[ -f $HOME/.local/share/bash-completion/gita-completion.bash ]] && . $HOME/.local/share/bash-completion/gita-completion.bash
+[[ -f $HOME/.local/share/bash-completion/gita-completion.bash ]] && . ${HOME}/.local/share/bash-completion/gita-completion.bash
 
 # Start up -- used as reminders (create a script to add and remove reminders)
 # echo "Reminders:" | clr blue
