@@ -88,7 +88,7 @@ alias wal="wally-cli"
 alias gl="glow"
 
 # pwd
-alias pwd="pwd | clr greenL"
+alias pwd="pwd | clr cyan"
 
 # neovim
 alias rmswap="rm $HOME/.local/state/nvim/swap/*"

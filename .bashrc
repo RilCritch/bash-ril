@@ -30,9 +30,12 @@ if [ -d "$HOME/.local/bin" ]; then
 	PATH="$HOME/.local/bin:$PATH"
 fi
 
-
 if [ -d "$HOME/.local/rilbin" ]; then
 	PATH="$HOME/.local/rilbin:$PATH"
+fi
+
+if [ -d "$HOME/.local/rilbin/color-scripts" ]; then
+	PATH="$HOME/.local/rilbin/color-scripts:$PATH"
 fi
 
 if [ -d "$HOME/scripts" ]; then
@@ -88,3 +91,5 @@ eval "$(starship init bash)"
 # print-reminders.sh && lineacross | clr blackL && neofetch
 # print-reminders.sh && neofetch
 # print-reminders.sh
+
+neofetch
