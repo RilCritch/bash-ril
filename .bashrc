@@ -42,6 +42,8 @@ pathadd "$HOME/Documents/testing/scripts"
 
 pathadd "$HOME/.cargo/bin"
 
+pathadd "$HOME/go/bin"
+
 #ignore upper and lowercase when TAB completion
 bind "set completion-ignore-case on"
 
