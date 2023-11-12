@@ -21,38 +21,26 @@ PS1='[\u@\h \W]\$ '
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# App and Script locations Locations
-if [ -d "$HOME/.bin" ]; then
-	PATH="$HOME/.bin:$PATH"
-fi
+# Adding Directories to path
+pathadd() {
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+        PATH="${PATH:+"$PATH:"}$1"
+    fi
+}
 
-if [ -d "$HOME/.local/bin" ]; then
-	PATH="$HOME/.local/bin:$PATH"
-fi
+pathadd "$HOME/.bin"
 
-if [ -d "$HOME/.local/rilbin" ]; then
-	PATH="$HOME/.local/rilbin:$PATH"
-fi
+pathadd "$HOME/.local/bin"
 
-if [ -d "$HOME/.local/rilbin/color-scripts" ]; then
-	PATH="$HOME/.local/rilbin/color-scripts:$PATH"
-fi
+pathadd "$HOME/.local/rilbin"
 
-if [ -d "$HOME/scripts" ]; then
-	PATH="$HOME/scripts:$PATH"
-fi
+pathadd "$HOME/.local/rilbin/color-scripts"
 
-if [ -d "$HOME/.cargo/bin" ]; then
-	PATH="$HOME/.cargo/bin:$PATH"
-fi
+pathadd "$HOME/.local/rilbin/starship"
 
-if [ -d "$HOME/.emacs.d/bin" ]; then
-    PATH="$HOME/.emacs.d/bin:$PATH"
-fi
+pathadd "$HOME/Documents/testing/scripts"
 
-# if which ruby >/dev/null && which gem >/dev/null; then
-# 	PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
-# fi
+pathadd "$HOME/.cargo/bin"
 
 #ignore upper and lowercase when TAB completion
 bind "set completion-ignore-case on"
@@ -81,6 +69,8 @@ eval "$(starship init bash)"
 # auto completion
 [[ -f $HOME/.local/share/bash-completion/gita-completion.bash ]] && . ${HOME}/.local/share/bash-completion/gita-completion.bash
 
+[[ -f $HOME/Builds/qmk_firmware/util/qmk_tab_complete.sh ]] && . ${HOME}/Builds/qmk_firmware/util/qmk_tab_complete.sh
+
 # Start up -- used as reminders (create a script to add and remove reminders)
 # echo "Reminders:" | clr blue
 # echo "----------" | clr
@@ -92,4 +82,7 @@ eval "$(starship init bash)"
 # print-reminders.sh && neofetch
 # print-reminders.sh
 
-neofetch
+# cli-typer -t 15 -w 12
+toipe -n 10
+# neofetch
+ca ls
