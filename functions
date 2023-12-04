@@ -186,6 +186,13 @@ ccdfr() {
 		eza -la --group-directories-first --icons --grid --no-user --no-filesize
 	fi
 }
+
+# Fast cd to my repos
+rep() {
+	choice=$(\ls /home/rc/Repos/ | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
+
+    cd "/home/rc/Repos/${choice}"
+}
 # }}}
 
 # FZF Arch packages {{{
