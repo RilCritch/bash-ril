@@ -136,7 +136,7 @@ cdf() {
 		echo -n "Now in "
 		echo "$(pwd)" | clr blue
 		lineacross | clr blackL
-		exa -a --group-directories-first --icons
+		eza -a --group-directories-first --icons
 	fi
 }
 
@@ -152,7 +152,7 @@ ccdf() {
 		echo -n "Now in "
 		echo -n "$(pwd)" | clr blue
 		lineacross | clr blackL
-		exa -la --group-directories-first --icons --grid --no-user --no-filesize --no-permissions --time-style="iso"
+		eza -la --group-directories-first --icons --grid --no-user --no-filesize --no-permissions --time-style="iso"
 	fi
 }
 
@@ -166,7 +166,7 @@ cdfr() {
 		echo -n "Now in "
 		echo "$(pwd)" | clr blue
 		lineacross | clr blackL
-		exa -a --group-directories-first --icons
+		eza -a --group-directories-first --icons
 	fi
 }
 
@@ -183,7 +183,7 @@ ccdfr() {
 		echo -n "Now in "
 		echo -n "$(pwd)" | clr blue
 		lineacross | clr blackL
-		exa -la --group-directories-first --icons --grid --no-user --no-filesize
+		eza -la --group-directories-first --icons --grid --no-user --no-filesize
 	fi
 }
 # }}}

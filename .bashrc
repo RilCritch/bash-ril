@@ -44,6 +44,10 @@ pathadd "$HOME/.cargo/bin"
 
 pathadd "$HOME/go/bin"
 
+pathadd "$HOME/Builds/bat-extras/bin"
+
+. "$HOME/.cargo/env"
+
 #ignore upper and lowercase when TAB completion
 bind "set completion-ignore-case on"
 
@@ -84,7 +88,7 @@ eval "$(starship init bash)"
 # print-reminders.sh && neofetch
 # print-reminders.sh
 
-# cli-typer -t 15 -w 12
 toipe -n 10
-# neofetch
-ca ls
+ca font-test
+lineacross | clr blackL
+ls
