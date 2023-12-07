@@ -97,10 +97,14 @@ alias words="wc -w"
 
 # common flags
 alias cp="cp -i"
+
 alias rm="rm -I"
 alias rmr="rm -rI"
+alias rmrf="rm -rf"
+
 alias mv="mv -i"
-alias mkdir="mkdir -p"
+
+alias m="mkdir -p"
 
 # git
 alias gll="gita ll"
@@ -162,10 +166,16 @@ alias pxs='pypisearch'   # searching for python packages
 
 # debian
 alias apt='nala'                                                 # replace apt with nala wrapper
-alias apti='sudo nala install'                                   # install packages for debian
-alias apts='sudo nala search'                                    # search for debian packages
-alias aptup='sudo aptitude update && sudo aptitude full-upgrade' # refresh and update debian packages
-
+alias ni='sudo nala install'
+alias nis='sudo nala install --install-suggests'
+alias nib='sudo nala install --fix-broken'
+alias ns='sudo nala search'
+alias nsn='sudo nala search -n'                                    # search for debian packages
+alias nls='sudo nala list -i'
+alias aptup='sudo nala update && sudo nala upgrade'
+# alias aptup='sudo aptitude update && sudo aptitude full-upgrade' # refresh and update debian packages
+#
+#
 # }}}
 
 ## linux customization {{{
@@ -189,7 +199,7 @@ alias mdvim="NVIM_APPNAME=neovim/MDvim nvim"
 alias mdv="NVIM_APPNAME=neovim/MDvim nvim"
 
 # viewing text
-alias cat='bat'
+alias cat='batcat'
 alias man='batman'
 
 # images
