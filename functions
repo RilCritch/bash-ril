@@ -126,76 +126,68 @@ palette() {
 # }}}
 
 # FZF cd {{{
-# fast cd - basic
-cdf() {
-	choice=$(find $HOME -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
-
-	if [ -n "$choice" ]; then
-		cd $choice
-		echo
-		echo -n "Now in "
-		echo "$(pwd)" | clr blue
-		lineacross | clr blackL
-		eza -a --group-directories-first --icons
-	fi
-}
-
 # fast cd - verbose and clear screen
-ccdf() {
+d() {
 	choice=$(find $HOME -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
 
 	if [ -n "$choice" ]; then
 		cd $choice
 		clear
-		sparky | clr blackL
-		lineacross | clr blackL
-		echo -n "Now in "
-		echo -n "$(pwd)" | clr blue
-		lineacross | clr blackL
-		eza -la --group-directories-first --icons --grid --no-user --no-filesize --no-permissions --time-style="iso"
-	fi
-}
 
-# fast cd on root - basic
-cdfr() {
-	sudo -v
-	choice=$(sudo find / -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
-
-	if [ -n "$choice" ]; then
-		cd $choice
-		echo -n "Now in "
-		echo "$(pwd)" | clr blue
+		# sparky | clr blackL
+        echo -e "${black}-| ${cyan}${bold}$(\pwd)${reset}${black} |-${reset}"
+        lsa
 		lineacross | clr blackL
-		eza -a --group-directories-first --icons
 	fi
 }
 
 # fast cd on root - verbose and clear screen
-ccdfr() {
+dr() {
 	sudo -v
 	choice=$(sudo find / -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
 
 	if [ -n "$choice" ]; then
 		cd $choice
 		clear
-		sparky | clr blackL
+
+		# sparky | clr blackL
+        echo -e "${black}-| ${cyan}${bold}$(\pwd)${reset}${black} |-${reset}"
+		# eza -la --group-directories-first --icons --grid --no-user --no-filesize
+        lsa
 		lineacross | clr blackL
-		echo -n "Now in "
-		echo -n "$(pwd)" | clr blue
-		lineacross | clr blackL
-		eza -la --group-directories-first --icons --grid --no-user --no-filesize
 	fi
 }
 
 # Fast cd to my repos
-rep() {
+r() {
 	choice=$(\ls /home/rc/Repos/ | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
 
-    cd "/home/rc/Repos/${choice}"
+    if [ -n "$choice" ]; then
+        cd "/home/rc/Repos/${choice}"
+        clear
+
+        # sparky | clr blackL
+        lsa
+        lineacross | clr blackL
+        git status -s
+        git summary
+    fi
 }
 # }}}
 
-# FZF Arch packages {{{
+# FZF packages {{{
+
+# debian packages
+ddf() {
+	choice=$(apt-cache -n search '.*' | awk -F ' - ' '{print $1}' | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'nala show {}')
+
+	if [ -n "$choice" ]; then
+		echo "Installing $choice" | clr cyan
+	    sudo nala install $choice	
+	fi
+
+}
+
 # pacman searching
 pacf() {
 	choice=$(pacman -Slq | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'pacman -Si {}')
@@ -215,9 +207,7 @@ aurf() {
 		paru $choice
 	fi
 }
-# }}}
 
-# FZF flatpak {{{
 flatf() {
 	choice=$(flatpak remote-ls flathub | awk '{ printf "%s %s\n", $1, $2, $3 }' | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview $'flatpak remote-info flathub "$(echo {} | awk \'{printf "%s", $2}\')"')
 

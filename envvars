@@ -20,6 +20,7 @@ export MOST_INITFILE="$HOME/.config/most/most.rc"
 
 export EZA_ICON_SPACING=1
 export STARSHIP_LOG="error"
+export EDITOR="nvim"
 
 # }}}
 #
