@@ -38,6 +38,8 @@ pathadd "$HOME/.local/rilbin/color-scripts"
 
 pathadd "$HOME/.local/rilbin/starship"
 
+pathadd "$HOME/.local/rilbin/file-management"
+
 pathadd "$HOME/Documents/testing/scripts"
 
 pathadd "$HOME/.cargo/bin"
@@ -88,7 +90,21 @@ eval "$(starship init bash)"
 # print-reminders.sh && neofetch
 # print-reminders.sh
 
-toipe -n 10
-ca font-test
-lineacross | clr blackL
+# toipe -n 10
+# ca font-test
+# sparky | clr black
+# lineacross | clr blackL
+
+# echo -e "${black}<== ${cyan}${bold}$(\pwd)${reset} ${black}==>${reset}"
+echo -e "${l_black}-|${reset} ${white}${bold}$(\pwd)${reset}${l_black} |-${reset}"
 ls
+
+echo
+# lineacross | clr blackL
+# echo
+
+# echo -e "${black}<== ${cyan}${bold}Repos${reset} ${black}==>${reset}"
+echo -e "${l_black}-|${reset} ${white}${bold}Git Status${reset}${l_black} |-${reset}"
+gita ll common
+
+# lineacross | clr blackL
