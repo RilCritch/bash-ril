@@ -70,6 +70,7 @@ shopt -s expand_aliases # expand aliases
 [[ -f $HOME/Repos/bash-ril/aliases ]] && . ${HOME}/Repos/bash-ril/aliases
 [[ -f $HOME/Repos/bash-ril/envvars ]] && . ${HOME}/Repos/bash-ril/envvars
 [[ -f $HOME/Repos/bash-ril/functions ]] && . ${HOME}/Repos/bash-ril/functions
+[[ -f $HOME/Repos/bash-ril/startup ]] && . ${HOME}/Repos/bash-ril/startup
 
 #starship
 eval "$(starship init bash)"
@@ -108,3 +109,7 @@ echo -e "${l_black}-|${reset} ${white}${bold}Git Status${reset}${l_black} |-${re
 gita ll common
 
 # lineacross | clr blackL
+
+source /home/rc/.bash_completions/girok.sh
+
+export PATH=$PATH:/home/rc/.spicetify

@@ -6,6 +6,19 @@
 #
 # author: RilCritch
 
+# Startup Functions {{{
+
+# Startup
+# starup() {
+# 	choice=$(find $HOME -type d | fzf --header-first --height=100% --reverse --prompt='▶ ' --pointer='󱦰' --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
+#
+# 	if [ -n "$choice" ]; then
+# 		cd $choice
+# 	fi
+# }
+
+# }}}
+
 # show the list of packages that need this package - depends mpv as example {{{
 depends() {
 	search=$(echo "$1")
@@ -126,9 +139,10 @@ palette() {
 # }}}
 
 # FZF cd {{{
+
 # fast cd - verbose and clear screen
 d() {
-	choice=$(find $HOME -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
+	choice=$(find $HOME -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
 
 	if [ -n "$choice" ]; then
 		cd $choice
@@ -144,7 +158,7 @@ d() {
 # fast cd on root - verbose and clear screen
 dr() {
 	sudo -v
-	choice=$(sudo find / -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
+	choice=$(sudo find / -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
 
 	if [ -n "$choice" ]; then
 		cd $choice
@@ -160,7 +174,7 @@ dr() {
 
 # Fast cd to my repos
 r() {
-	choice=$(\ls /home/rc/Repos/ | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
+	choice=$(\ls /home/rc/Repos/ | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
 
     if [ -n "$choice" ]; then
         cd "/home/rc/Repos/${choice}"
