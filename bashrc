@@ -40,7 +40,7 @@ pathadd "$HOME/.local/rilbin/starship"
 
 pathadd "$HOME/.local/rilbin/file-management"
 
-pathadd "$HOME/Documents/testing/scripts"
+pathadd "$HOME/Documents/Testing/scripts"
 
 pathadd "$HOME/.cargo/bin"
 
