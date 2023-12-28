@@ -181,10 +181,11 @@ r() {
         clear
 
         # sparky | clr blackL
+        git-status
+
+        echo
+
         lsa
-        lineacross | clr blackL
-        git status -s
-        git summary
     fi
 }
 # }}}
