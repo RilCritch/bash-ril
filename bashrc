@@ -76,6 +76,10 @@ shopt -s expand_aliases # expand aliases
 eval "$(starship init bash)"
 
 # auto completion
+# Use bash-completion, if available
+[[ -f /usr/share/bash-completion/bash_completion ]] && \
+    . /usr/share/bash-completion/bash_completion
+
 [[ -f $HOME/.local/share/bash-completion/gita-completion.bash ]] && . ${HOME}/.local/share/bash-completion/gita-completion.bash
 
 [[ -f $HOME/Builds/qmk_firmware/util/qmk_tab_complete.sh ]] && . ${HOME}/Builds/qmk_firmware/util/qmk_tab_complete.sh
@@ -96,6 +100,24 @@ eval "$(starship init bash)"
 # sparky | clr black
 # lineacross | clr blackL
 
+# lineacross | clr blackL
+
+source /home/rc/.bash_completions/girok.sh
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+case ":$PATH:" in
+    *:/home/rc/.juliaup/bin:*)
+        ;;
+
+    *)
+        export PATH=/home/rc/.juliaup/bin${PATH:+:${PATH}}
+        ;;
+esac
+
+# <<< juliaup initialize <<<
 # echo -e "${black}<== ${cyan}${bold}$(\pwd)${reset} ${black}==>${reset}"
 echo -e "${l_black}-|${reset} ${white}${bold}$(\pwd)${reset}${l_black} |-${reset}"
 ls
@@ -108,8 +130,3 @@ echo
 echo -e "${l_black}-|${reset} ${white}${bold}Git Status${reset}${l_black} |-${reset}"
 gita ll common
 
-# lineacross | clr blackL
-
-source /home/rc/.bash_completions/girok.sh
-
-export PATH=$PATH:/home/rc/.spicetify

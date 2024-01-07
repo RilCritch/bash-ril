@@ -188,6 +188,18 @@ r() {
         lsa
     fi
 }
+
+# Fast cd through notes
+n() {
+	choice=$( fdfind . "$HOME/Repos/notes-ril" --type d | sed 's|/home/rc/Repos/notes-ril/||' | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
+
+    if [ -n "$choice" ]; then
+        cd "${HOME}/Repos/notes-ril/${choice}"
+        clear
+
+        clst
+    fi
+}
 # }}}
 
 # FZF packages {{{
@@ -235,9 +247,9 @@ flatf() {
 
 # FZF neovim {{{
 # alias nva="NVIM_APPNAME=astro-nvim nvim"
-alias nvc="NVIM_APPNAME=nv-chad nvim"
-alias nvl="NVIM_APPNAME=lazy-nvim nvim"
-alias nvf="NVIM_APPNAME=from-scratch nvim"
+# alias nvc="NVIM_APPNAME=nv-chad nvim"
+# alias nvl="NVIM_APPNAME=lazy-nvim nvim"
+# alias nvf="NVIM_APPNAME=from-scratch nvim"
 
 snv() {
 	# items=("default" "from-scratch" "lazy-nvim" "nv-chad" )

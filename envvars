@@ -24,11 +24,11 @@ export EDITOR="nvim"
 
 # }}}
 
-## Gimp {
+## Gimp {{{
 
 export GIMP2_DIRECTORY="${HOME}/.config/GIMP/2.10"
 
-#}
+# }}}
 
 ## FZF {{{
 
@@ -60,3 +60,22 @@ prompt:6,pointer:4,spinner:3'"
 export WORKON_HOME="$HOME/documents/programming/pyenvs"
 
 # }}}
+
+## tasks {{{
+
+# NOTE: these are a work on progress
+# Defaults:
+# TSK_DIR="${XDG_DATA_HOME}/tasks_storage"
+# TSK_DEF_CAT="General"
+# TSK_EDITOR="\nano"
+# TSK_VIEWER="\cat"
+# TSK_NAVIGATION="cli"
+
+# Testing:
+# TSK_DIR="/home/rc/Documents/Testing/tasks_script/code/testing_dir"
+# TSK_DEF_CAT="General"
+# TSK_EDITOR="\nvim"
+# TSK_VIEWER="\glow"
+# TSK_NAVIGATION="fzf"
+
+#}}}
