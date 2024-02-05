@@ -11,14 +11,16 @@
 # screen savers
 alias rmatrix='cxxmatrix --frame-rate 45 --no-diffuse --preserve-background'
 
-# pretty output
-alias cs='colorscript -e'
-alias line='lineacross | clr'
-alias spark='sparky | clr'
+# Simple output separators
+alias lineacross='across-line'
+alias sparky='wave-spark'
+
+# Weather
+# alias weather="curl wttr.in/" generic
+# alias wttr="curl wttr.in/63005" # Chesterfield weather
+
 
 # reminders
-alias rsh="reminders.sh"
-alias prsh="print-reminders.sh"
 
 # }}}
 
@@ -31,7 +33,10 @@ alias lsa='eza -a --group-directories-first --icons'
 
 # long
 alias ll='eza -l --group-directories-first --grid --no-filesize --icons --no-user --no-filesize'
+alias lll='eza -l --group-directories-first'
+
 alias lla='eza -la --group-directories-first --grid --no-filesize --icons --no-user --no-filesize'
+alias llal='eza -la --group-directories-first'
 
 # directories only
 alias ld='eza -D --icons'

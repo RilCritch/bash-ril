@@ -118,15 +118,7 @@ case ":$PATH:" in
 esac
 
 # <<< juliaup initialize <<<
-# echo -e "${black}<== ${cyan}${bold}$(\pwd)${reset} ${black}==>${reset}"
-echo -e "${l_black}-|${reset} ${white}${bold}$(\pwd)${reset}${l_black} |-${reset}"
-ls
 
-echo
-# lineacross | clr blackL
-# echo
+# |- Startup ->
 
-# echo -e "${black}<== ${cyan}${bold}Repos${reset} ${black}==>${reset}"
-echo -e "${l_black}-|${reset} ${white}${bold}Git Status${reset}${l_black} |-${reset}"
-gita ll common
-
+/home/rc/Documents/rc-scripts/bin/terminfo-rcs/welcome
