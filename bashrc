@@ -54,7 +54,6 @@ pathadd "$HOME/Builds/bat-extras/bin"
 bind "set completion-ignore-case on"
 
 ### TEMP STUFF TO ADD TO MY BASH CONFIG FILES ###
-export FZF_DEFAULT_COMMAND="fd"
 export RANGER_LOAD_DEFAULT_RC=FALSE
 
 #shopt
@@ -66,10 +65,11 @@ shopt -s histappend     # do not overwrite history
 shopt -s expand_aliases # expand aliases
 
 # import bash configurations files
+[[ -f $HOME/Repos/bash-ril/envvars ]] && . ${HOME}/Repos/bash-ril/envvars
 [[ -f $HOME/Repos/bash-ril/ansi_escape_sequences ]] && . ${HOME}/Repos/bash-ril/ansi_escape_sequences
 [[ -f $HOME/Repos/bash-ril/aliases ]] && . ${HOME}/Repos/bash-ril/aliases
-[[ -f $HOME/Repos/bash-ril/envvars ]] && . ${HOME}/Repos/bash-ril/envvars
 [[ -f $HOME/Repos/bash-ril/functions ]] && . ${HOME}/Repos/bash-ril/functions
+[[ -f $HOME/Repos/bash-ril/testing ]] && . ${HOME}/Repos/bash-ril/testing
 [[ -f $HOME/Repos/bash-ril/startup ]] && . ${HOME}/Repos/bash-ril/startup
 
 #starship
