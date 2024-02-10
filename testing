@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# Description ->
+#
+# |- Summary:
+#             - File for testing ideas for bashrc
+#
+# |- Usage: Place functions or other bash script to be sourced in bashrc
+#
+
+# Document Info ->
+#
+# |- Author: Riley Crtichfield
+#
+# |- Last Update: 02/10/2024
+
+
+# |- Functions ->
+
+## Testing Directory Access
+# dir-test() {
+#     if [[ -z "$1" ]]; then
+#         dir="${HOME}"
+#         echo "Dir set to default -> \$dir=${dir}"
+#     else
+#         if [[ -d "$1" ]]; then
+#             dir="$1"
+#             echo "Dir set to argument -> \$dir=${dir}"
+#         else
+#             echo "Dir not set as specified dir does not exist"
+#             return 1
+#         fi
+#     fi
+#     echo "end of function"
+# }
+
+
+# |- Aliases ->
+
+##  TODO: Place shell here
+
+
+# |- Misc ->
+
+# Vim options - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# vim:fileencoding=utf-8:foldmethod=marker
