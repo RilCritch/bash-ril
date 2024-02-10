@@ -26,6 +26,9 @@ alias sparky='wave-spark'
 
 ## list - eza {{{
 
+# eza defaults
+alias eza="eza --color='always'"
+
 # base
 alias ls='eza --group-directories-first --icons'
 alias sl='eza --group-directories-first --icons'
