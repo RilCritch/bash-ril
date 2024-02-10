@@ -6,102 +6,84 @@
 #
 # author: RilCritch
 
-# Startup Functions {{{
+# Imports - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+. ${BASH_HOME}/ansi_escape_sequences
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-# Startup
-# starup() {
-# 	choice=$(find $HOME -type d | fzf --header-first --height=100% --reverse --prompt='▶ ' --pointer='󱦰' --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
-#
-# 	if [ -n "$choice" ]; then
-# 		cd $choice
-# 	fi
-# }
 
-# }}}
+# Utilities {{{
 
-# show the list of packages that need this package - depends mpv as example {{{
-depends() {
-	search=$(echo "$1")
-	sudo pacman -Sii $search | grep "Required" | sed -e "s/Required By     : //g" | sed -e "s/  /\n/g"
+## directory tests {{{{
+
+# Check if argument for dir is empty or a valid dir
+#  This function defaults to the $HOME dir
+# |- Arg 1 is empty: dir -> $HOME
+# |- Arg 1 is Dir:   dir -> $1
+# |- Arg 1 is ! Dir: dir -> "" (empty string denotes failure)
+get-dir-h() {
+    if [[ -z "$1" ]]; then
+        echo "${HOME}"
+    else
+        if [[ -d "$1" ]]; then
+            echo "${1}"
+        else
+            echo ""
+        fi
+    fi
 }
-# }}}
-
-# navigation moving up directories {{{
-up() {
-	local d=""
-	local limit="$1"
-
-	# Default to limit of 1
-	if [ -z "$limit" ] || [ "$limit" -le 0 ]; then
-		limit=1
-	fi
-
-	for ((i = 1; i <= limit; i++)); do
-		d="../$d"
-	done
-
-	# perform cd. Show error if cd fails
-	if ! cd "$d"; then
-		echo "Couldn't go up $limit dirs."
-	fi
+ 
+# Check if argument for dir is empty or a valid dir
+#  This function defaults to the working directory
+# |- Same as get-dir-c but default is current directory
+get-dir-c() {
+    if [[ -z "$1" ]]; then
+        \pwd
+    else
+        if [[ -d "$1" ]]; then
+            echo "${1}"
+        else
+            echo ""
+        fi
+    fi
 }
-# }}}
+# }}}}
 
-# EXtractor for all kinds of archives {{{
-# usage: ex <file>
-ex() {
-	if [ -f $1 ]; then
-		case $1 in
-		*.tar.bz2) tar xf $1 ;;
-		*.tar.gz) tar xzf $1 ;;
-		*.bz2) bunzip2 $1 ;;
-		*.rar) unrar x $1 ;;
-		*.gz) gunzip $1 ;;
-		*.tar) tar xf $1 ;;
-		*.tbz2) tar xf $1 ;;
-		*.tgz) tar xzf $1 ;;
-		*.zip) unzip $1 ;;
-		*.Z) uncompress $1 ;;
-		*.7z) 7z x $1 ;;
-		*.deb) ar x $1 ;;
-		*.tar.xz) tar xf $1 ;;
-		*.tar.zst) tar xf $1 ;;
-		*) echo "'$1' cannot be extracted via ex()" ;;
-		esac
-	else
-		echo "'$1' is not a valid file"
-	fi
+## Size Calculations {{{{
+
+# Returns the recommended size of a tree
+# |- When empty string is returned no tree is recommended
+# |- Note: this function assumes you've already check for valid dir
+tree-size() {
+    if [[ -z $2 ]]; then
+        extra_lines="0"
+    else
+        if [[ "$2" =~ ^-?[0-9]+$ ]]; then
+            extra_lines="$2"
+        else
+            extra_lines="0"
+        fi
+    fi 
+    term_height=$(tput lines)
+    height=$((term_height - extra_lines))
+
+    if [[ $(\eza -Ta -L=2  "$1" | wc -l) -lt "$height" ]]; then
+        echo "2"
+    elif [[ $(\eza -Ta -L=1  "$1" | wc -l) -lt "$height" ]]; then
+        echo "1"
+    else
+        echo "0"
+    fi
 }
-# }}}
 
-# Info output {{{
-
-## weather
-### weather help
-# function wttr_help() {
-#     # print help
-# }
-# function wttr_oneline() {
-#     # prompt for format
-#     # prompt for location
-# }
-# ### weather wrapper function
-# function wttr() {
-#     local subcommand="$1" # string thats a command for wttr
-#     local argument="$2" # argument for subcommand
-#
-#     case "$subcommand" in
-#         "help")
-#             wttr_help "${argument}"
-#             ;;
-#         "oneline")
-#             wttr_oneline "${argument}"
-# }
+# }}}}
 
 # }}}
 
-# Recursive eza {{{
-# Recursive listing
+
+# Directory Listing {{{
+
+## Recursive {{{{
+
 lsr() {
 	local size="$1"
 
@@ -124,8 +106,10 @@ clsr() {
 	clear
 	eza -R --icons -L="$size" --group-directories-first
 }
+# }}}}
 
-# Tree listing
+## Tree {{{{
+
 lst() {
 	local size="$1"
 
@@ -160,43 +144,99 @@ clsta() {
 	clear
 	eza -Ta --icons -L="$size" --group-directories-first
 }
-# }}}
+# }}}}
 
-# get a color palette for an image {{{
-palette() {
-	img=$1
+## In depth list outputs {{{{
 
-	vimg $img
+# Directory overview
+# |- Arg 1: Directory to list (must be valid dir, default: pwd)
+dir-overview() {
+    dir_name=$(get-dir-c "$1")
+    if [[ -z "$dir_name" ]]; then
+        echo -e "${red}ERROR: ${reset}Specified Directory ${blue}${1} ${reset}does not exist."
+        return 2
+    fi
 
-	# hex values
-	~/mydots/applications/okolors -k 10 -w 0.01 -n 3 -l 10,30,50,70 -s l $img
+    dir_path=$(realpath "${dir_name}")
+    num_files=$(fdfind . "${dir_path}" -H --type f --max-depth 1 | wc -l)
+    num_dirs=$(fdfind . "${dir_path}" -H --type d --max-depth 1 | wc -l)
+    num_links=$(fdfind . "${dir_path}" -H --type l --max-depth 1 | wc -l)
+    tree_height=$(tree-size "$dir_path" "4")
 
-	# swatch
-	~/mydots/applications/okolors -k 10 -w 0.01 -n 3 -l 10,30,50,70 -s l -o swatch $img
+    # output
+    # across-line | clr blackL
+
+    echo -en "${cyan} "
+    echo -en "${bold}${dir_path}${reset} ${l_black}|"
+
+    echo -en "${reset}  "
+    echo -en "${dim} ${num_files}${reset} ${l_black}|"
+
+    echo -en "${blue}  "
+    echo -en "${dim} ${num_dirs}${reset} ${l_black}|"
+
+    echo -en "${cyan}  "
+    echo -e "${dim} ${num_links}"
+
+
+    if [[ "$tree_height" -eq 0 ]]; then
+        across-line | clr blackL
+        term_width=$(tput cols)
+        col_width=$((term_width - 1))
+        # eza -a --group-directories-first --icons=always "$dir_path" | awk '{print " " $0}' | column --output-width ${col_width}
+        eza -a --group-directories-first --icons=always "$dir_path"
+    else
+        dir_length=${#dir_path}
+        files_length=${#num_files}
+        dirs_length=${#num_dirs}
+        links_length=${#num_links}
+
+        linewidth=$((dir_length + files_length + dirs_length + links_length + 19))
+
+        echo -e -n "${l_black}┌"
+        for (( i=1 ; i<=linewidth; i++ )); do
+            echo -n "─"
+        done
+        echo
+	    # eza -T --icons -L="$tree_height" --group-directories-first | awk '{print "  " $0}' | sed '1d'
+	    # eza -T --icons -L="$tree_height" --group-directories-first  | sed '1d'
+	    eza -Ta --icons="always" -L="$tree_height" --group-directories-first "$dir_path" | awk 'NR > 1'
+    fi
 }
+# }}}}
+
 # }}}
+
 
 # FZF cd {{{
 
 # fast cd - verbose and clear screen
 d() {
-	choice=$(find $HOME -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
+    # Test for specified dir
+    dir_name=$(get-dir-h "$1")
+    if [[ -z "$dir_name" ]]; then
+        echo -e "Specified Directory ${blue}${1}${reset} does not exist."
+    fi
+
+    dir_path=$(realpath "${dir_name}")
+
+	choice=$(fdfind . "$dir_path" -H --type d | sed "s|${dir_path}/||" | fzf --border-label=" 󰥨 ${dir_path}/ " --preview "eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions {}")
 
 	if [ -n "$choice" ]; then
-		cd $choice
+		cd "${dir_path}/${choice}" || return 2
 		clear
 
-		# sparky | clr blackL
-        echo -e "${black}-| ${cyan}${bold}$(\pwd)${reset}${black} |-${reset}"
-        lsa
-		lineacross | clr blackL
+        # echo "line 208 dir: ${dir_path}/${choice}"
+
+        dir-overview "${dir_path}/${choice}"
+        echo
 	fi
 }
 
 # fast cd on root - verbose and clear screen
 dr() {
 	sudo -v
-	choice=$(sudo find / -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
+	choice=$(sudo fdfind . / -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions {}')
 
 	if [ -n "$choice" ]; then
 		cd $choice
@@ -212,7 +252,7 @@ dr() {
 
 # Fast cd to my repos
 r() {
-	choice=$(\ls /home/rc/Repos/ | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
+	choice=$(\ls /home/rc/Repos/ | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions {}')
 
     if [ -n "$choice" ]; then
         cd "/home/rc/Repos/${choice}"
@@ -229,7 +269,7 @@ r() {
 
 # Fast cd through notes
 n() {
-	choice=$( fdfind . "$HOME/Repos/notes-ril" --type d | sed 's|/home/rc/Repos/notes-ril/||' | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
+	choice=$( fdfind . "$HOME/Repos/notes-ril" --type d | sed 's|/home/rc/Repos/notes-ril/||' | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview "eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-permissions --no-time ${HOME}/Repos/notes-ril/{}")
 
     if [ -n "$choice" ]; then
         cd "${HOME}/Repos/notes-ril/${choice}"
@@ -239,6 +279,7 @@ n() {
     fi
 }
 # }}}
+
 
 # FZF packages {{{
 
@@ -283,11 +324,8 @@ flatf() {
 }
 # }}}
 
+
 # FZF neovim {{{
-# alias nva="NVIM_APPNAME=astro-nvim nvim"
-# alias nvc="NVIM_APPNAME=nv-chad nvim"
-# alias nvl="NVIM_APPNAME=lazy-nvim nvim"
-# alias nvf="NVIM_APPNAME=from-scratch nvim"
 
 snv() {
 	# items=("default" "from-scratch" "lazy-nvim" "nv-chad" )
@@ -300,6 +338,81 @@ snv() {
         config="neovim/${config}"
 	fi
 	NVIM_APPNAME=$config nvim $@
+}
+# }}}
+
+
+# Navigation {{{
+
+# Moving up directories
+up() {
+	local d=""
+	local limit="$1"
+
+	# Default to limit of 1
+	if [ -z "$limit" ] || [ "$limit" -le 0 ]; then
+		limit=1
+	fi
+
+	for ((i = 1; i <= limit; i++)); do
+		d="../$d"
+	done
+
+	# perform cd. Show error if cd fails
+	if ! cd "$d"; then
+		echo "Couldn't go up $limit dirs."
+	fi
+}
+# }}}
+
+
+# EXtractor for all kinds of archives {{{
+# usage: ex <file>
+ex() {
+	if [ -f $1 ]; then
+		case $1 in
+		*.tar.bz2) tar xf $1 ;;
+		*.tar.gz) tar xzf $1 ;;
+		*.bz2) bunzip2 $1 ;;
+		*.rar) unrar x $1 ;;
+		*.gz) gunzip $1 ;;
+		*.tar) tar xf $1 ;;
+		*.tbz2) tar xf $1 ;;
+		*.tgz) tar xzf $1 ;;
+		*.zip) unzip $1 ;;
+		*.Z) uncompress $1 ;;
+		*.7z) 7z x $1 ;;
+		*.deb) ar x $1 ;;
+		*.tar.xz) tar xf $1 ;;
+		*.tar.zst) tar xf $1 ;;
+		*) echo "'$1' cannot be extracted via ex()" ;;
+		esac
+	else
+		echo "'$1' is not a valid file"
+	fi
+}
+# }}}
+
+
+# show the list of packages that need this package - depends mpv as example {{{
+depends() {
+	search=$(echo "$1")
+	sudo pacman -Sii $search | grep "Required" | sed -e "s/Required By     : //g" | sed -e "s/  /\n/g"
+}
+# }}}
+
+
+# get a color palette for an image {{{
+palette() {
+	img=$1
+
+	vimg $img
+
+	# hex values
+	~/mydots/applications/okolors -k 10 -w 0.01 -n 3 -l 10,30,50,70 -s l $img
+
+	# swatch
+	~/mydots/applications/okolors -k 10 -w 0.01 -n 3 -l 10,30,50,70 -s l -o swatch $img
 }
 # }}}
 
