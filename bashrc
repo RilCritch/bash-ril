@@ -100,7 +100,7 @@ eval "$(starship init bash)"
 # sparky | clr black
 # lineacross | clr blackL
 
-# lineacross | clr blackL
+# lineacross | clr blackL - 
 
 source /home/rc/.bash_completions/girok.sh
 
