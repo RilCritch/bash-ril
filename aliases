@@ -142,6 +142,9 @@ alias dct="deactivate"
 
 ## script utilities {{{
 
+# Manage git repos with changes
+alias mr="manage-repos"
+
 # }}}
 
 ## packages {{{
