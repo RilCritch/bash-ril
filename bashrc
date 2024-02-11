@@ -122,3 +122,4 @@ esac
 # |- Startup ->
 
 /home/rc/Documents/rc-scripts/bin/terminfo-rcs/welcome
+echo -e "${cyan}NOTE: ${reset}Set up help script for commands in my environment\n"
