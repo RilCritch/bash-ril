@@ -49,6 +49,12 @@ alias lf='eza -f --icons'
 alias lfa='eza -fa --icons'
 # }}}
 
+## directory navigation {{{
+
+# quick actions
+
+#}}}
+
 ## clear {{{
 
 # basic

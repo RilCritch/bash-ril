@@ -17,7 +17,9 @@
 
 # |- Functions ->
 
-## Testing Directory Access
+## Testing New Functions {{{
+
+# Testing Directory Access
 # dir-test() {
 #     if [[ -z "$1" ]]; then
 #         dir="${HOME}"
@@ -34,6 +36,49 @@
 #     echo "end of function"
 # }
 
+# }}}
+
+## Old and currently not in use {{{
+
+# fast cd on root - verbose and clear screen
+# dr() {
+# 	sudo -v
+# 	choice=$(sudo fdfind . / -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions {}')
+#
+# 	if [ -n "$choice" ]; then
+# 		cd $choice
+# 		clear
+#
+# 		# sparky | clr blackL
+#         echo -e "${black}-| ${cyan}${bold}$(\pwd)${reset}${black} |-${reset}"
+# 		# eza -la --group-directories-first --icons --grid --no-user --no-filesize
+#         lsa
+# 		lineacross | clr blackL
+# 	fi
+# }
+
+# fzf through different neovim configs
+# need to set up for my new debian envioronment
+# snv() {
+# 	# items=("default" "from-scratch" "lazy-nvim" "nv-chad" )
+#     items=$(\ls ~/.config/neovim/)
+# 	config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config   " --exit-0)
+# 	if [[ -z $config ]]; then
+# 		# echo "Nothing selected"
+# 		return 0
+#     else
+#         config="neovim/${config}"
+# 	fi
+# 	NVIM_APPNAME=$config nvim "$@"
+# }
+
+# show the list of packages that need this package - depends mpv as example
+# depends() {
+# 	search=$(echo "$1")
+# 	sudo pacman -Sii $search | grep "Required" | sed -e "s/Required By     : //g" | sed -e "s/  /\n/g"
+# }
+
+# }}}
 
 # |- Aliases ->
 

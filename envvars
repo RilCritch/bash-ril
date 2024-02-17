@@ -8,7 +8,17 @@
 
 ## RilCritch's Environment {{{
 
+
+# Directories
+export RCS_DIR="${HOME}/.local/share/rc-scripts" #: RC Scripts data location
+export RCS_BIN_DIR="${HOME}/.local/bin"
 export BASH_HOME="${HOME}/Repos/bash-ril"
+
+# User info
+export RCS_NAME="RilCritch" #: preferred name
+
+# Git info
+export RCS_GIT_USERNAME="${RCS_NAME}"
 
 # }}}
 
@@ -87,19 +97,5 @@ export WORKON_HOME="$HOME/documents/programming/pyenvs"
 # TSK_EDITOR="\nvim"
 # TSK_VIEWER="\glow"
 # TSK_NAVIGATION="fzf"
-
-#}}}
-
-## Riley Scripts Env Vars {{{
-
-# Directories
-export RCS_DIR="${HOME}/.local/share/rc-scripts" #: RC Scripts data location
-export RCS_BIN_DIR="${HOME}/.local/bin"
-
-# User info
-export RCS_NAME="RilCritch" #: preferred name
-
-# Git info
-export RCS_GIT_USERNAME="${RCS_NAME}"
 
 #}}}

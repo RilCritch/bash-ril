@@ -1,10 +1,22 @@
 #!/usr/bin/env bash
 
-# vim:fileencoding=utf-8:foldmethod=marker:filetype=bash
-
-# functions for bashrc
+# Description ->
 #
-# author: RilCritch
+# |- Summary: Functions for bash environment
+#             - Includes many functions that work better inside of bash
+#
+# |- Dependencies:
+#             - fzf
+#             - fdfind
+#             - eza
+#             - others depending on OS
+#             - RilCritch's ansi_escape_sequences file
+
+# Document Info ->
+#
+# |- Author: RilCritch
+#
+# |- Last Update: 02/11/2024
 
 # Imports - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 . ${BASH_HOME}/ansi_escape_sequences
@@ -48,12 +60,33 @@ get-dir-c() {
 }
 # }}}}
 
+## Tests {{{{
+
+# Simple number test
+# 0 -> is a number
+# 1 -> not a number
+is_number() {
+    if [[ "$1" =~ ^-?[0-9]+$ ]]; then
+        echo "0"
+    else
+        echo "1"
+    fi
+}
+
+#}}}}
+
 ## Size Calculations {{{{
 
 # Returns the recommended size of a tree
-# |- When empty string is returned no tree is recommended
-# |- Note: this function assumes you've already check for valid dir
+# |- If a non valid dir is specified pwd is used
 tree-size() {
+    # Arguments
+    if [[ ! -d "${1}" ]]; then
+        dir_name=$(\pwd)
+    else
+        dir_name="${1}"
+    fi
+
     if [[ -z $2 ]]; then
         extra_lines="0"
     else
@@ -62,13 +95,14 @@ tree-size() {
         else
             extra_lines="0"
         fi
-    fi 
+    fi
+
     term_height=$(tput lines)
     height=$((term_height - extra_lines))
 
-    if [[ $(\eza -Ta -L=2  "$1" | wc -l) -lt "$height" ]]; then
+    if [[ $(\eza -I=".git" -Ta -L=2  "$dir_name" | wc -l) -lt "$height" ]]; then
         echo "2"
-    elif [[ $(\eza -Ta -L=1  "$1" | wc -l) -lt "$height" ]]; then
+    elif [[ $(\eza -I=".git" -Ta -L=1  "$dir_name" | wc -l) -lt "$height" ]]; then
         echo "1"
     else
         echo "0"
@@ -150,57 +184,72 @@ clsta() {
 
 # Directory overview
 # |- Arg 1: Directory to list (must be valid dir, default: pwd)
+# |- Arg 2: Integer specifying extra lines for eza height calculation
 dir-overview() {
+    # Arguments
     dir_name=$(get-dir-c "$1")
     if [[ -z "$dir_name" ]]; then
         echo -e "${red}ERROR: ${reset}Specified Directory ${blue}${1} ${reset}does not exist."
         return 2
     fi
 
+    if [[ -n "${2}" && $(is_number "${2}") -eq 0 ]]; then
+        input="${2}"
+        extra_lines=$((input + 4))
+    else
+        extra_lines="4"
+    fi
+
+    # Data
     dir_path=$(realpath "${dir_name}")
     num_files=$(fdfind . "${dir_path}" -H --type f --max-depth 1 | wc -l)
     num_dirs=$(fdfind . "${dir_path}" -H --type d --max-depth 1 | wc -l)
     num_links=$(fdfind . "${dir_path}" -H --type l --max-depth 1 | wc -l)
-    tree_height=$(tree-size "$dir_path" "4")
+    tree_height=$(tree-size "${dir_path}" "${extra_lines}")
 
     # output
-    # across-line | clr blackL
-
-    echo -en "${cyan} "
-    echo -en "${bold}${dir_path}${reset} ${l_black}|"
-
-    echo -en "${reset}  "
-    echo -en "${dim} ${num_files}${reset} ${l_black}|"
-
-    echo -en "${blue}  "
-    echo -en "${dim} ${num_dirs}${reset} ${l_black}|"
-
-    echo -en "${cyan}  "
-    echo -e "${dim} ${num_links}"
-
-
     if [[ "$tree_height" -eq 0 ]]; then
+        echo -en "${cyan} "
+        echo -en "${bold}${dir_path}${reset} ${l_black}|"
+
+        echo -en "${reset}  "
+        echo -en "${dim} ${num_files}${reset} ${l_black}|"
+
+        echo -en "${blue}  "
+        echo -en "${dim} ${num_dirs}${reset} ${l_black}|"
+
+        echo -en "${cyan}  "
+        echo -e "${dim} ${num_links}"
+
         across-line | clr blackL
-        term_width=$(tput cols)
-        col_width=$((term_width - 1))
-        # eza -a --group-directories-first --icons=always "$dir_path" | awk '{print " " $0}' | column --output-width ${col_width}
-        eza -a --group-directories-first --icons=always "$dir_path"
+
+        eza -a --group-directories-first -I=".git" "$dir_path"
     else
+        echo -en "${cyan}  "
+        echo -en "${bold}${dir_path}${reset} ${l_black}|"
+
+        echo -en "${reset}  "
+        echo -en "${dim} ${num_files}${reset} ${l_black}|"
+
+        echo -en "${blue}  "
+        echo -en "${dim} ${num_dirs}${reset} ${l_black}|"
+
+        echo -en "${cyan}  "
+        echo -e "${dim} ${num_links}"
+
         dir_length=${#dir_path}
         files_length=${#num_files}
         dirs_length=${#num_dirs}
         links_length=${#num_links}
 
-        linewidth=$((dir_length + files_length + dirs_length + links_length + 19))
+        linewidth=$((dir_length + files_length + dirs_length + links_length + 21))
 
-        echo -e -n "${l_black}┌"
+        echo -e -n "${l_black}┍"
         for (( i=1 ; i<=linewidth; i++ )); do
-            echo -n "─"
+            echo -n "━"
         done
         echo
-	    # eza -T --icons -L="$tree_height" --group-directories-first | awk '{print "  " $0}' | sed '1d'
-	    # eza -T --icons -L="$tree_height" --group-directories-first  | sed '1d'
-	    eza -Ta --icons="always" -L="$tree_height" --group-directories-first "$dir_path" | awk 'NR > 1'
+	    eza -Ta -L="$tree_height" --group-directories-first -I=".git" "$dir_path" | awk 'NR > 1'
     fi
 }
 # }}}}
@@ -209,6 +258,40 @@ dir-overview() {
 
 
 # FZF cd {{{
+
+dir-nav-fzf() {
+    # Test for specified dir
+    dir_name=$(get-dir-h "$1")
+    if [[ -z "$dir_name" ]]; then
+        echo -e "Specified Directory ${blue}${1}${reset} does not exist."
+    fi
+
+    dir_path=$(realpath "${dir_name}")
+
+	choice=$(fdfind . "$dir_path" --type d | sed "s|${dir_path}/||" | fzf --border-label=" 󰥨 ${dir_path}/ " --preview "eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions {}")
+
+	if [ -n "$choice" ]; then
+		cd "${dir_path}/${choice}" || return 2
+		clear
+	fi
+}
+
+dir-nav-fzf-hid() {
+    # Test for specified dir
+    dir_name=$(get-dir-h "$1")
+    if [[ -z "$dir_name" ]]; then
+        echo -e "Specified Directory ${blue}${1}${reset} does not exist."
+    fi
+
+    dir_path=$(realpath "${dir_name}")
+
+	choice=$(fdfind . "$dir_path" -H --type d | sed "s|${dir_path}/||" | fzf --border-label=" 󰥨 ${dir_path}/ " --preview "eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions {}")
+
+	if [ -n "$choice" ]; then
+		cd "${dir_path}/${choice}" || return 2
+		clear
+	fi
+}
 
 # fast cd - verbose and clear screen
 d() {
@@ -226,58 +309,48 @@ d() {
 		cd "${dir_path}/${choice}" || return 2
 		clear
 
-        # echo "line 208 dir: ${dir_path}/${choice}"
-
         dir-overview "${dir_path}/${choice}"
         echo
-	fi
-}
 
-# fast cd on root - verbose and clear screen
-dr() {
-	sudo -v
-	choice=$(sudo fdfind . / -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions {}')
-
-	if [ -n "$choice" ]; then
-		cd $choice
-		clear
-
-		# sparky | clr blackL
-        echo -e "${black}-| ${cyan}${bold}$(\pwd)${reset}${black} |-${reset}"
-		# eza -la --group-directories-first --icons --grid --no-user --no-filesize
-        lsa
-		lineacross | clr blackL
 	fi
 }
 
 # Fast cd to my repos
 r() {
-	choice=$(\ls /home/rc/Repos/ | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions {}')
+	choice=$(\ls /home/rc/Repos/ | fzf --header-first --border-label="  Git Repositories " --reverse --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions {}')
 
     if [ -n "$choice" ]; then
-        cd "/home/rc/Repos/${choice}"
+        base_dir="/home/rc/Repos/${choice}"
+        cd "${base_dir}" || return 2
         clear
 
-        sparky | clr blackL
+        dir_number=$(fdfind . "${base_dir}" --type d --max-depth 1 | wc -l)
+        if [[ "$dir_number" -gt 0 ]]; then
+            dir-nav-fzf "${base_dir}"
+        fi
+
         repo-header
 
-        echo
+        header_size=$(repo-header | wc -l)
+        extra_lines=$((header_size + 1))
 
-        lsa
+        dir-overview . "${extra_lines}"
+        echo
     fi
 }
 
 # Fast cd through notes
 n() {
-	choice=$( fdfind . "$HOME/Repos/notes-ril" --type d | sed 's|/home/rc/Repos/notes-ril/||' | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview "eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-permissions --no-time ${HOME}/Repos/notes-ril/{}")
+	choice=$( fdfind . "$HOME/Repos/notes-ril" --type d | sed 's|/home/rc/Repos/notes-ril/||' | fzf --border-label=" 󰠮 Search Notes Directory " --header-first --reverse  --preview "eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-permissions --no-time ${HOME}/Repos/notes-ril/{}")
 
     if [ -n "$choice" ]; then
-        cd "${HOME}/Repos/notes-ril/${choice}"
+        cd "${HOME}/Repos/notes-ril/${choice}" || return 2
         clear
 
-        clst
+        dir-overview
     fi
 }
+
 # }}}
 
 
@@ -288,8 +361,8 @@ ddf() {
 	choice=$(apt-cache -n search '.*' | awk -F ' - ' '{print $1}' | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'nala show {}')
 
 	if [ -n "$choice" ]; then
-		echo "Installing $choice" | clr cyan
-	    sudo nala install $choice	
+		echo "Installing ${choice}" | clr cyan
+	    sudo nala install "${choice}"
 	fi
 
 }
@@ -300,7 +373,7 @@ pacf() {
 
 	if [ -n "$choice" ]; then
 		echo "Installing $choice" | clr green
-		sudo pacman -S $choice
+		sudo pacman -S "${choice}"
 	fi
 }
 
@@ -310,7 +383,7 @@ aurf() {
 
 	if [ -n "$choice" ]; then
 		echo "Installing $choice" | clr green
-		paru $choice
+		paru "${choice}"
 	fi
 }
 
@@ -319,25 +392,8 @@ flatf() {
 
 	if [ -n "$choice" ]; then
 		echo "Installing $choice" | clr green
-		flatpak install flathub $choice
+		flatpak install flathub "${choice}"
 	fi
-}
-# }}}
-
-
-# FZF neovim {{{
-
-snv() {
-	# items=("default" "from-scratch" "lazy-nvim" "nv-chad" )
-    items=$(\ls ~/.config/neovim/)
-	config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config   " --exit-0)
-	if [[ -z $config ]]; then
-		# echo "Nothing selected"
-		return 0
-    else
-        config="neovim/${config}"
-	fi
-	NVIM_APPNAME=$config nvim $@
 }
 # }}}
 
@@ -366,7 +422,9 @@ up() {
 # }}}
 
 
-# EXtractor for all kinds of archives {{{
+# File Manipulation {{{
+
+# EXtractor for all kinds of archives
 # usage: ex <file>
 ex() {
 	if [ -f $1 ]; then
@@ -394,27 +452,6 @@ ex() {
 # }}}
 
 
-# show the list of packages that need this package - depends mpv as example {{{
-depends() {
-	search=$(echo "$1")
-	sudo pacman -Sii $search | grep "Required" | sed -e "s/Required By     : //g" | sed -e "s/  /\n/g"
-}
-# }}}
-
-
-# get a color palette for an image {{{
-palette() {
-	img=$1
-
-	vimg $img
-
-	# hex values
-	~/mydots/applications/okolors -k 10 -w 0.01 -n 3 -l 10,30,50,70 -s l $img
-
-	# swatch
-	~/mydots/applications/okolors -k 10 -w 0.01 -n 3 -l 10,30,50,70 -s l -o swatch $img
-}
-# }}}
-
-
+# Vim options - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # vim: ts=4 sts=4 sw=4 et
+# vim:fileencoding=utf-8:foldmethod=marker
