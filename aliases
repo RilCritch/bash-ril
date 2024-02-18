@@ -27,7 +27,7 @@ alias sparky='wave-spark'
 ## list - eza {{{
 
 # eza defaults
-alias eza="eza --color='always'"
+alias eza="eza --color='always' --icons='always'"
 
 # base
 alias ls='eza --group-directories-first --icons'
@@ -51,22 +51,26 @@ alias lfa='eza -fa --icons'
 
 ## directory navigation {{{
 
-# quick actions
+### Quick Fuzzy Directory Navigation (using function 'd' in bash functions)
+alias docs='d /home/rc/Documents' # document directories
+alias blds='d /home/rc/Builds' # builds direcorties
+alias r='d /home/rc/Repos'
 
-#}}}
+alias .cfg='d /home/rc/.config' # .config directories
+alias .lcl='d /home/rc/.local' # .local directories
+
+
+# }}}
 
 ## clear {{{
 
 # basic
-alias cc='clear'
-alias cca='clear &&'
-
-# info
-alias ccda='clear && pwd &&'
+alias c='clear'
+alias ca='clear &&'
 
 # pretty
-alias c="clear && sparky | clr blackL && lineacross | clr blackL"
-alias ca="clear && sparky | clr blackL && lineacross | clr blackL &&"
+alias cc="clear && sparky | clr blackL && lineacross | clr blackL"
+alias cca="clear && sparky | clr blackL && lineacross | clr blackL &&"
 
 # }}}
 
@@ -128,6 +132,9 @@ alias m="mkdir -p"
 # git
 alias gll="gita ll"
 alias gls="gfold | grep -vi 'rilcritch'"
+
+# wget history file
+alias wget="wget --hsts-file=${XDG_DATA_HOME}/wget-hsts"
 
 # dmenu
 # alias dmenu_run='dmenu_run -fn "MononokiNerdFont-32" -nb "#1e1e2e" -nf "#cdd6f4" -sb "#f5c2e7" -sf "#1e1e2e"'

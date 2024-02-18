@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# |- Description ->
+#    - File that adds paths to the PATH environemnt variable
+
+# |- Function ->
+pathadd() {
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+        export PATH="${PATH:+"$PATH:"}$1"
+    fi
+}
+
+# |- Adding Paths ->
+
+# General directories
+pathadd "${HOME}/.bin"
+pathadd "${HOME}/.local/bin"
+
+# Custom directories
+pathadd "${HOME}/.local/rilbin"
+pathadd "${HOME}/.local/rilbin/color-scripts"
+pathadd "${HOME}/.local/rilbin/starship"
+pathadd "${HOME}/.local/rilbin/file-management"
+pathadd "${HOME}/Documents/Testing/scripts"
+
+# Package directories
+pathadd "${HOME}/.local/share/go/bin"
+pathadd "${HOME}/Builds/bat-extras/bin"
+pathadd "${HOME}/.local/share/cargo/bin"
+pathadd "${HOME}/.local/share/npm/bin"
+pathadd "${HOME}/.juliaup/bin"
+
+
+# Vim options ->
+# vim:fileencoding=utf-8:foldmethod=marker

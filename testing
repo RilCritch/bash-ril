@@ -36,6 +36,61 @@
 #     echo "end of function"
 # }
 
+# FZF Directory Navigation
+dirtst () {
+    # Test for directory path -> default to home
+    dir_name=$(get-dir-h "$1")
+    if [[ -z "${dir_name}" ]]; then
+        echo -e "Specified Directory ${blue}${1}${reset} does not exist."
+        echo "false"
+        return 2
+    fi
+    dir_path=$(realpath "${dir_name}")
+
+    choice="notempty"
+    dir_traversal="false"
+
+    # Run fzf to traverse directories
+    while [[ -n "${choice}" ]]; do
+        choice=$(fdfind . "$dir_path" --type d | sed "s|${dir_path}/||" | fzf --border-label=" 󰥨 ${dir_path}/ " --preview "eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions {}")
+
+        if [[ -n "${choice}" ]]; then
+            dir_traversal="true"
+
+            cd "${dir_path}/${choice}" || return 2
+
+            dir_path=$(realpath "${dir_path}/${choice}")
+            dir_number=$(fdfind . "${dir_path}" --type d --max-depth 1 | wc -l)
+
+            # stop loop if ther are no more directories to traverse
+            if [[ "${dir_number}" -le 0 ]]; then
+                choice=""
+            fi
+        fi
+    done
+
+    # Print data if neccessary
+    if [[ "${dir_traversal}" == "true" ]]; then
+        clear
+
+        # Git repo?
+        repo_path=$(git rev-parse --show-toplevel 2> /dev/null)
+
+        # account for extra height of script output
+        if [[ -n "${repo_path}" ]]; then
+            repo-header
+
+            header_size=$(repo-header | wc -l)
+            extra_lines=$((header_size + 1))
+        else
+            extra_lines=1
+        fi
+
+            dir-overview . "${extra_lines}"
+            echo
+    fi
+}
+
 # }}}
 
 ## Old and currently not in use {{{
@@ -78,7 +133,56 @@
 # 	sudo pacman -Sii $search | grep "Required" | sed -e "s/Required By     : //g" | sed -e "s/  /\n/g"
 # }
 
+# fast cd - verbose and clear screen
+# function d() {
+#     # Test for specified dir
+#     dir_name=$(get-dir-h "$1")
+#     if [[ -z "$dir_name" ]]; then
+#         echo -e "Specified Directory ${blue}${1}${reset} does not exist."
+#         return 2
+#     fi
+#
+#     dir_path=$(realpath "${dir_name}")
+#
+# 	choice=$(fdfind . "$dir_path" -H --type d | sed "s|${dir_path}/||" | fzf --border-label=" 󰥨 ${dir_path}/ " --preview "eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions {}")
+#
+# 	if [ -n "$choice" ]; then
+# 		cd "${dir_path}/${choice}" || return 2
+# 		clear
+#
+#         dir-overview "${dir_path}/${choice}"
+#         echo
+#
+# 	fi
+# }
+
+# Fast cd to my repos
+# r() {
+# 	choice=$(\ls /home/rc/Repos/ | fzf --header-first --border-label="  Git Repositories " --reverse --preview 'eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions {}')
+#
+#     if [ -n "$choice" ]; then
+#         base_dir="/home/rc/Repos/${choice}"
+#         cd "${base_dir}" || return 2
+#         clear
+#
+#         dir_number=$(fdfind . "${base_dir}" --type d --max-depth 1 | wc -l)
+#         if [[ "$dir_number" -gt 0 ]]; then
+#             dir-nav-fzf "${base_dir}"
+#         fi
+#
+#         repo-header
+#
+#         header_size=$(repo-header | wc -l)
+#         extra_lines=$((header_size + 1))
+#
+#         dir-overview . "${extra_lines}"
+#         echo
+#     fi
+# }
+
+
 # }}}
+
 
 # |- Aliases ->
 

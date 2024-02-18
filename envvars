@@ -6,6 +6,14 @@
 #
 # author: RilCritch
 
+## Misc {{{
+#
+export EDITOR='nvim'
+export VISUAL='nvim'
+export HISTCONTROL=ignoreboth:erasedups
+
+#}}}
+
 ## RilCritch's Environment {{{
 
 
@@ -32,13 +40,28 @@ export MOST_INITFILE="$HOME/.config/most/most.rc"
 
 # }}}
 
-## mis applications {{{
+## misc applications {{{
 
 export EZA_ICON_SPACING=1
 export STARSHIP_LOG="error"
 export EDITOR="nvim"
 
 # }}}
+
+## Move files from $HOME {{{
+
+export HISTFILE="${XDG_STATE_HOME}/bash/history"
+export CARGO_HOME="${XDG_DATA_HOME}/cargo"
+export RUSTUP_HOME="${XDG_DATA_HOME}/rustup"
+export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
+export GOPATH="${XDG_DATA_HOME}/go"
+export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc"
+export JULIA_DEPOT_PATH="${XDG_DATA_HOME}/julia:${JULIA_DEPOT_PATH}"
+export ICEAUTHORITY="${XDG_CACHE_HOME}/ICEauthority"
+export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
+export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
+
+#}}}
 
 ## Gimp {{{
 
@@ -51,10 +74,8 @@ export GIMP2_DIRECTORY="${HOME}/.config/GIMP/2.10"
 export FZF_DEFAULT_COMMAND="fdfind"
 
 export FZF_DEFAULT_OPTS="--header-first \
---reverse --border-label-pos=2 \
+--reverse --border-label-pos=2 -i \
 --no-scrollbar --border --height=~50% \
---scheme='history' --history-size=2000 \
---history='${HOME}/Repos/notes-ril/software_history/fzf_hist' \
 --prompt='󰍉 ' --pointer='' --marker='󰮺' \
 --color='\
 fg:black,fg+:-1,preview-fg:white,\

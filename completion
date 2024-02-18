@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# |- Description ->
+#    - File that sources autocompletions files
+
+# |- Directories
+BASH_COMP="${HOME}/.local/share/bash-completion"
+
+# |- Source bash completions ->
+
+[[ -f /usr/share/bash-completion/bash_completion ]] && \
+    . /usr/share/bash-completion/bash_completion
+
+
+[[ -f "${BASH_COMP}/gita-completion.bash" ]] && . "${BASH_COMP}/gita-completion.bash"
+[[ -f "${HOME}/Builds/qmk_firmware/util/qmk_tab_complete.sh" ]] && . "${HOME}/Builds/qmk_firmware/util/qmk_tab_complete.sh"
+[[ -f "${BASH_COMP}/girok.sh" ]] && . "${BASH_COMP}/girok.sh"
+
+
+# Vim options ->
+# vim:fileencoding=utf-8:foldmethod=marker

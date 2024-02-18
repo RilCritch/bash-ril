@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# |- Description ->
+#    - File that sets some useful bash options
+
+# |- Options ->
+
+#ignore upper and lowercase when TAB completion
+bind "set completion-ignore-case on"
+
+#shopt
+shopt -s autocd  # change to named directory
+shopt -s cdspell # autocorrects cd misspellings
+shopt -s cmdhist # save multi-line commands in history as single line
+shopt -s dotglob
+shopt -s histappend     # do not overwrite history
+shopt -s expand_aliases # expand aliases
+
+# Vim options ->
+# vim:fileencoding=utf-8:foldmethod=marker
