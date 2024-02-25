@@ -309,7 +309,7 @@ d () {
 
     # Run fzf to traverse directories
     while [[ -n "${choice}" ]]; do
-        choice=$(fdfind . "$dir_path" -H --type d | sed "s|${dir_path}/||" | fzf --height=100% --border-label=" 󰥨 ${dir_path}/ " --preview "eza --tree -l --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions ${dir_path}/{}")
+        choice=$(fdfind . "$dir_path" -H --type d | sed "s|${dir_path}/||" | fzf --border-label=" 󰥨 ${dir_path}/ " --preview "eza --tree -l --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions ${dir_path}/{}")
 
         if [[ -n "${choice}" ]]; then
             dir_traversal="true"
@@ -395,7 +395,7 @@ ddf() {
 
 	if [ -n "$choice" ]; then
 		echo "Installing ${choice}" | clr cyan
-	    sudo nala install "${choice}"
+	    sudo nala install --install-suggests "${choice}"
 	fi
 
 }
@@ -425,7 +425,7 @@ flatf() {
 
 	if [ -n "$choice" ]; then
 		echo "Installing $choice" | clr green
-		flatpak install flathub "${choice}"
+		# flatpak install flathub "${choice}"
 	fi
 }
 # }}}

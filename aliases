@@ -110,7 +110,7 @@ alias pwd="pwd | clr cyan"
 alias rmswap="rm $HOME/.local/state/nvim/swap/*"
 
 # calculator
-alias calc="bc"
+alias calc="clear && numbat"
 
 # clipboard manager
 
@@ -203,8 +203,14 @@ alias nsn='sudo nala search -n'                                    # search for 
 alias nls='sudo nala list -i'
 alias aptup='sudo nala update && sudo nala upgrade'
 # alias aptup='sudo aptitude update && sudo aptitude full-upgrade' # refresh and update debian packages
-#
-#
+
+# flatpak
+alias flls='flatpak list --app --columns=name,application,version'
+alias flla='flatpak list'
+alias flup='flatpak update'
+
+# cargo
+
 # }}}
 
 ## linux customization {{{
