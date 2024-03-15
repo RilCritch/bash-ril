@@ -234,7 +234,8 @@ alias nvimtutor="nvim -c Tutor"
 # alias mdv="NVIM_APPNAME=neovim/MDvim nvim"
 
 # viewing text
-alias cat='batcat'
+alias bat='batcat'
+alias cat='batcat --paging=never'
 alias man='batman'
 
 # images

@@ -391,7 +391,7 @@ n() {
 
 # debian packages
 ddf() {
-	choice=$(apt-cache -n search '.*' | awk -F ' - ' '{print $1}' | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'nala show {}')
+	choice=$(apt-cache -n search '.*' | awk -F ' - ' '{print $1}' | fzf --height=100% --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'nala show {}')
 
 	if [ -n "$choice" ]; then
 		echo "Installing ${choice}" | clr cyan

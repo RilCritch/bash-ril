@@ -18,9 +18,9 @@ BUILD_DIR="${HOME}/Builds"
 
 # |- FZF completion engine ->
 
-[[ -f "${BUILD_DIR}/fzf-tab-completion/bash/fzf-bash-completion.sh" ]] &&
-    source "${BUILD_DIR}/fzf-tab-completion/bash/fzf-bash-completion.sh"
-bind -x '"\t": fzf_bash_completion'
+# [[ -f "${BUILD_DIR}/fzf-tab-completion/bash/fzf-bash-completion.sh" ]] &&
+#     source "${BUILD_DIR}/fzf-tab-completion/bash/fzf-bash-completion.sh"
+# bind -x '"\t": fzf_bash_completion'
 
 # Vim options ->
 # vim:fileencoding=utf-8:foldmethod=marker
