@@ -119,7 +119,7 @@ cdf() {
 }
 
 # fast cd - verbose and clear screen
-ccdf() {
+d() {
 	choice=$(find $HOME -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
 
 	if [ -n "$choice" ]; then
@@ -149,7 +149,7 @@ cdfr() {
 }
 
 # fast cd on root - verbose and clear screen
-ccdfr() {
+dr() {
 	sudo -v
 	choice=$(sudo find / -type d | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'exa --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --time-style='long-iso' {}')
 
