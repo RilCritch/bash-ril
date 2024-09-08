@@ -65,12 +65,12 @@ alias .lcl='d /home/rc/.local' # .local directories
 ## clear {{{
 
 # basic
-alias c='clear'
-alias ca='clear &&'
+alias cc='clear'
+alias cca='clear &&'
 
 # pretty
-alias cc="clear && sparky | clr blackL && lineacross | clr blackL"
-alias cca="clear && sparky | clr blackL && lineacross | clr blackL &&"
+alias c="clear && sparky | clr blackL && lineacross | clr blackL"
+alias ca="clear && sparky | clr blackL && lineacross | clr blackL &&"
 
 # }}}
 

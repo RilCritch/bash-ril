@@ -39,6 +39,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_CACHE_HOME="$HOME/.cache"
 export MOST_INITFILE="$HOME/.config/most/most.rc"
+export RIPGREP_CONFIG_PATH="${HOME}/.config/ripgrep/rg.conf"
 
 # }}}
 
@@ -76,7 +77,7 @@ export FZF_DEFAULT_COMMAND="fdfind"
 
 export FZF_DEFAULT_OPTS="--header-first \
 --reverse --border-label-pos=2 -i \
---cycle
+--cycle \
 --no-scrollbar --border --height=~60% \
 --prompt='󰍉 ' --pointer='' --marker='󰮺' \
 --color='\
@@ -118,6 +119,9 @@ header:cyan,label:blue:bold,preview-label:cyan'"
 export WORKON_HOME="$HOME/documents/programming/pyenvs"
 
 # }}}
+
+export GDK_DPI_SCALE=0.5
+export QT_FONT_DPI=96
 
 ## tasks {{{
 

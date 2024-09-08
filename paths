@@ -22,6 +22,8 @@ pathadd "${HOME}/.local/rilbin/color-scripts"
 pathadd "${HOME}/.local/rilbin/starship"
 pathadd "${HOME}/.local/rilbin/file-management"
 pathadd "${HOME}/Documents/Testing/scripts"
+pathadd "${HOME}/Repos/scripts-ril"
+pathadd "${HOME}/Repos/scripts-ril/color-scripts"
 
 # Package directories
 pathadd "${HOME}/.local/share/go/bin"

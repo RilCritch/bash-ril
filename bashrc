@@ -29,7 +29,7 @@ eval "$(starship init bash)"
 
 # |- Startup ->
 
-/home/rc/Documents/rc-scripts/bin/terminfo-rcs/welcome-tree
-echo
+# /home/rc/Documents/rc-scripts/bin/terminfo-rcs/welcome-tree
+# echo
 
 # echo -e "${cyan}note: ${reset}Set up help script for commands in my environment\n"
