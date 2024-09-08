@@ -140,6 +140,26 @@ clsr() {
 	clear
 	eza -R --icons -L="$size" --group-directories-first
 }
+
+clsra() {
+	local size="$1"
+    local ignore="$2" # format "ignore1|ignore2|ignoreN"
+
+	# Default size of 2
+	if [ -z "$size" ] || [ "$size" -le 0 ]; then
+		size=2
+	fi
+
+    # files to ignore
+    if [ -z "$ignore" ]; then
+        ignore=""
+    else
+        ignore="--ignore-glob='${2}'"
+    fi
+
+	clear
+	eval eza -Ra --icons "$ignore" -L="$size" --group-directories-first
+}
 # }}}}
 
 ## Tree {{{{
