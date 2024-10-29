@@ -72,6 +72,10 @@ alias cca='clear &&'
 alias c="clear && sparky | clr blackL && lineacross | clr blackL"
 alias ca="clear && sparky | clr blackL && lineacross | clr blackL &&"
 
+# repo
+alias cr="clear && sparky | clr blackL && repo-header"
+alias cra="clear && sparky | clr blackL && repo-header &&"
+
 # }}}
 
 ## directory / file management / quick access {{{

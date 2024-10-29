@@ -129,6 +129,17 @@ lsr() {
 	eza -R --icons -L="$size" --group-directories-first
 }
 
+lsra() {
+	local size="$1"
+
+	# Default size of 2
+	if [ -z "$size" ] || [ "$size" -le 0 ]; then
+		size=2
+	fi
+
+	eza -R -a --icons -L="$size" --group-directories-first
+}
+
 clsr() {
 	local size="$1"
 
