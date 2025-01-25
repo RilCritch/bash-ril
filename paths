@@ -26,6 +26,7 @@ pathadd "${HOME}/Repos/scripts-ril"
 pathadd "${HOME}/Repos/scripts-ril/color-scripts"
 
 # Package directories
+pathadd "/usr/local/go/bin"
 pathadd "${HOME}/.local/share/go/bin"
 pathadd "${HOME}/Builds/bat-extras/bin"
 pathadd "${HOME}/.local/share/cargo/bin"

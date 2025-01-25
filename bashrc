@@ -29,12 +29,13 @@ eval "$(starship init bash)"
 
 # |- Startup ->
 
-/home/rc/Documents/rc-scripts/bin/terminfo-rcs/welcome-tree
+## /home/rc/Documents/rc-scripts/bin/terminfo-rcs/welcome-tree
 echo
 
 # echo -e "${cyan}note: ${reset}Set up help script for commands in my environment\n"
 
 
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# export NVM_DIR="$HOME/.config/nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+. "/home/rc/.local/share/cargo/env"

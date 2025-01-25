@@ -11,7 +11,7 @@
 export EDITOR='nvim'
 export VISUAL='nvim'
 export HISTCONTROL=ignoreboth:erasedups
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+# export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 # man 2 select
 
 #}}}

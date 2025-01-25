@@ -35,10 +35,10 @@ alias sl='eza --group-directories-first --icons'
 alias lsa='eza -a --group-directories-first --icons'
 
 # long
-alias ll='eza -l --group-directories-first --grid --no-filesize --icons --no-user --no-filesize'
+alias ll='eza -l --group-directories-first --no-filesize --icons --no-user'
 alias lll='eza -l --group-directories-first'
 
-alias lla='eza -la --group-directories-first --grid --no-filesize --icons --no-user --no-filesize'
+alias lla='eza -la --group-directories-first --no-filesize --icons --no-user'
 alias llal='eza -la --group-directories-first'
 
 # directories only
@@ -238,9 +238,9 @@ alias nvimtutor="nvim -c Tutor"
 # alias mdv="NVIM_APPNAME=neovim/MDvim nvim"
 
 # viewing text
-alias bat='batcat'
-alias cat='batcat --paging=never'
-alias man='batman'
+# alias bat='batcat'
+# alias cat='batcat --paging=never'
+# alias man='batman'
 
 # images
 alias vimg='echo && kitty +kitten icat'
