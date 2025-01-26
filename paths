@@ -21,7 +21,7 @@ pathadd "${HOME}/.local/rilbin"
 pathadd "${HOME}/.local/rilbin/color-scripts"
 pathadd "${HOME}/.local/rilbin/starship"
 pathadd "${HOME}/.local/rilbin/file-management"
-pathadd "${HOME}/Documents/Testing/scripts"
+pathadd "${HOME}/Documents/testing"
 pathadd "${HOME}/Repos/scripts-ril"
 pathadd "${HOME}/Repos/scripts-ril/color-scripts"
 

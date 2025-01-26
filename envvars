@@ -46,6 +46,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export MOST_INITFILE="$HOME/.config/most/most.rc" # most config
 export RIPGREP_CONFIG_PATH="${HOME}/.config/ripgrep/rg.conf" # ripgrep config
 export NVM_DIR="$HOME/.config/nvm"
+export WEZTERM_CONFIG_FILE="${HOME}/.config/wezterm/wezterm.lua"
 
 # }}}
 

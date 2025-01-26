@@ -426,7 +426,7 @@ ddf() {
 
 	if [ -n "$choice" ]; then
 		echo "Installing ${choice}" | clr cyan
-	    sudo nala install --install-suggests "${choice}"
+	    sudo nala install "${choice}"
 	fi
 
 }

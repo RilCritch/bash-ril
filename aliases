@@ -125,8 +125,8 @@ alias words="wc -w"
 # common flags
 alias cp="cp -i"
 
-alias rm="rm -I"
-alias rmr="rm -rI"
+alias rm="rm"
+alias rmr="rm -r"
 alias rmrf="rm -rf"
 
 alias mv="mv -i"

@@ -30,7 +30,7 @@ eval "$(starship init bash)"
 # |- Startup ->
 
 ## /home/rc/Documents/rc-scripts/bin/terminfo-rcs/welcome-tree
-echo
+sparky | clr cyanL && lineacross | clr blackL
 
 # echo -e "${cyan}note: ${reset}Set up help script for commands in my environment\n"
 
