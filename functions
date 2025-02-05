@@ -302,7 +302,7 @@ dir-nav-fzf() {
 
 	choice=$(fdfind . "$dir_path" --type d | sed "s|${dir_path}/||" | fzf --border-label=" 󰥨 ${dir_path}/ " --preview "eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions {}")
 
-	if [ -n "$choice" ]; then
+	if [[ -n "$choice" ]]; then
 		cd "${dir_path}/${choice}" || return 2
 		clear
 	fi
@@ -319,7 +319,7 @@ dir-nav-fzf-hid() {
 
 	choice=$(fdfind . "$dir_path" -H --type d | sed "s|${dir_path}/||" | fzf --border-label=" 󰥨 ${dir_path}/ " --preview "eza --tree -la --icons -F -L=2 --group-directories-first --no-filesize --no-user --no-time --no-permissions {}")
 
-	if [ -n "$choice" ]; then
+	if [[ -n "$choice" ]]; then
 		cd "${dir_path}/${choice}" || return 2
 		clear
 	fi

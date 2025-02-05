@@ -123,15 +123,11 @@ alias lines="wc -l"
 alias words="wc -w"
 
 # common flags
-alias cp="cp -i"
-
-alias rm="rm"
+alias cpr="cp -r"
 alias rmr="rm -r"
 alias rmrf="rm -rf"
 
-alias mv="mv -i"
-
-alias m="mkdir -p"
+alias md="mkdir -p"
 
 # git
 alias gll="gita ll"
@@ -376,8 +372,8 @@ alias ytv-best="yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+besta
 alias csb='clear && source ~/.bashrc'
 
 # switching
-alias tobash="sudo chsh $USER -s /bin/bash && echo 'Now log out.'"
-alias tozsh="sudo chsh $USER -s /bin/zsh && echo 'Now log out.'"
-alias tofish="sudo chsh $USER -s /bin/fish && echo 'Now log out.'"
+alias tobash="sudo chsh $USER -s /usr/bin/bash && echo 'Now log out.'"
+alias tozsh="sudo chsh $USER -s /usr/bin/zsh && echo 'Now log out.'"
+alias tofish="sudo chsh $USER -s /usr/bin/fish && echo 'Now log out.'"
 
 # }}}

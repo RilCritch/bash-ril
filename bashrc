@@ -30,6 +30,8 @@ eval "$(starship init bash)"
 # |- Startup ->
 
 ## /home/rc/Documents/rc-scripts/bin/terminfo-rcs/welcome-tree
+ 
+sleep 0.1
 sparky | clr cyanL && lineacross | clr blackL
 
 # echo -e "${cyan}note: ${reset}Set up help script for commands in my environment\n"
@@ -38,4 +40,3 @@ sparky | clr cyanL && lineacross | clr blackL
 # export NVM_DIR="$HOME/.config/nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 # [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-. "/home/rc/.local/share/cargo/env"
