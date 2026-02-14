@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+# Description ->
+#
+# |- Summary: Arch Linux specific aliases and functions
+#             - pacman, yay, paru package management
+#             - FZF package search (pacf, aurf)
+#
+# |- Dependencies:
+#             - pacman
+#             - yay or paru
+#             - fzf
+#             - expac
+
+# Document Info ->
+#
+# |- Author: RilCritch
+#
+# |- Last Update: 02/14/2026
+
+
+# Aliases {{{
+
+## pacman {{{{
+
+alias pacman='pacman --color auto'
+alias pss='pacman -Ss'                           # search for pkgs
+alias sps='sudo pacman -S'                       # isntall specified pkgs
+alias spr='sudo pacman -R'                       # remove a pkg, safer
+alias sprs='sudo pacman -Rs'                     # remove pkgs and depencies, can be dangerous
+alias spqo='sudo pacman -Qo'                     # determines which pkgs owns a specific file
+alias psyu='sudo pacman -Syu'                    # update only standard pkgs
+alias pacup='sudo pacman -Syyu'                  # refresh pkg list and update standard pkgs on arch
+alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphan pkgs
+
+# }}}}
+
+## yay {{{{
+
+alias yss='yay -Ss'   # search for AUR pkgs
+alias ysua='yay -Sua' # update only AUR pkgs
+alias ysyu='yay -Syu' # update standard and AUR pkgs
+
+# }}}}
+
+## paru {{{{
+
+alias pass='paru -Ss'       # search for aur pkgs
+alias pasua='paru -Sua'     # update only AUR pkgs
+alias updateall='paru -Syu' # updates standard and AUR pkgs
+
+# }}}}
+
+## package info {{{{
+
+alias listpkg='sudo pacman -Q | fzf'                         # list standard packages
+alias listorph='sudo pacman -Qtd | fzf'                      # list orphaned pkgs
+alias listaur='sudo pacman -Qm | fzf'                        # list AUR pkgs
+alias listpkgsize="expac -H M '%m\t%n' | sort -h | nl | fzf" # reads out pkgs and their sizes
+
+# }}}}
+
+# }}}
+
+
+# FZF Package Functions {{{
+
+# pacman searching
+pacf() {
+    local choice
+
+	choice=$(pacman -Slq | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'pacman -Si {}')
+
+	if [ -n "$choice" ]; then
+		echo "Installing $choice" | clr green
+		sudo pacman -S "${choice}"
+	fi
+}
+
+# AUR searching
+aurf() {
+    local choice
+
+	choice=$(paru -a -Slq | fzf --header-first --reverse --prompt='▶ ' --pointer='󱦰' --preview 'paru -Si {}')
+
+	if [ -n "$choice" ]; then
+		echo "Installing $choice" | clr green
+		paru "${choice}"
+	fi
+}
+
+# }}}
+
+
+# Vim options - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# vim: ts=4 sts=4 sw=4 et
+# vim:fileencoding=utf-8:foldmethod=marker

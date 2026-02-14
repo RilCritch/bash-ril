@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+# Description ->
+#
+# |- Summary: ArcoLinux specific aliases
+#             - ArcoLinux applications and system fixes
+#
+# |- Dependencies:
+#             - arcolinux tools
+
+# Document Info ->
+#
+# |- Author: RilCritch
+#
+# |- Last Update: 02/14/2026
+
+
+# Applications {{{
+
+alias adt="arcolinux-desktop-trasher"
+alias abl="arcolinux-betterlockscreen"
+alias agm="arcolinux-get-mirrors"
+alias amr="arcolinux-mirrorlist-rank-info"
+alias aom="arcolinux-osbeck-as-mirror"
+alias ars="arcolinux-reflector-simple"
+alias atm="arcolinux-tellme"
+alias avs="arcolinux-vbox-share"
+alias awa="arcolinux-welcome-app"
+
+# }}}
+
+
+# Fixes {{{
+
+alias fix-permissions="sudo chown -R $USER:$USER ~/.config ~/.local"
+alias keyfix="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
+alias key-fix="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
+alias keys-fix="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
+alias fixkey="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
+alias fixkeys="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
+alias fix-key="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
+alias fix-keys="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
+alias fix-pacman-conf="/usr/local/bin/arcolinux-fix-pacman-conf"
+alias fix-pacman-keyserver="/usr/local/bin/arcolinux-fix-pacman-gpg-conf"
+alias fix-grub="/usr/local/bin/arcolinux-fix-grub"
+alias fixgrub="/usr/local/bin/arcolinux-fix-grub"
+
+# }}}
+
+
+# Vim options - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# vim: ts=4 sts=4 sw=4 et
+# vim:fileencoding=utf-8:foldmethod=marker

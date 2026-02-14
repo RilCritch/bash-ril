@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
 
-# |- Description ->
-#    - File that adds paths to the PATH environemnt variable
+# Description ->
+#
+# |- Summary: PATH management for bash environment
+#             - Adds directories to PATH using pathadd() helper
+#
+# |- Dependencies:
+#             - none
+
+# Document Info ->
+#
+# |- Author: RilCritch
+#
+# |- Last Update: 02/14/2026
 
 # |- Function ->
 pathadd() {
@@ -34,6 +45,8 @@ pathadd "${HOME}/.local/share/cargo/bin"
 pathadd "${HOME}/.local/share/npm/bin"
 pathadd "${HOME}/.juliaup/bin"
 
+# Tool Directories
+pathadd "${HOME}/.opencode/bin"
 
 # Vim options ->
 # vim:fileencoding=utf-8:foldmethod=marker

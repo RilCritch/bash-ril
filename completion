@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
 
-# |- Description ->
-#    - File that sources autocompletions files
+# Description ->
+#
+# |- Summary: Tab completion configuration
+#             - Sources bash-completion scripts
+#
+# |- Dependencies:
+#             - bash-completion
+
+# Document Info ->
+#
+# |- Author: RilCritch
+#
+# |- Last Update: 02/14/2026
 
 # |- Directories
 BASH_COMP="${HOME}/.local/share/bash-completion"

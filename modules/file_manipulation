@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+# Description ->
+#
+# |- Summary: File manipulation functions
+#             - Archive extraction for various formats
+#
+# |- Dependencies:
+#             - tar, bunzip2, unrar, gunzip, unzip, uncompress, 7z, ar
+
+# Document Info ->
+#
+# |- Author: RilCritch
+#
+# |- Last Update: 02/14/2026
+
+
+# File Manipulation {{{
+
+# EXtractor for all kinds of archives
+# usage: ex <file>
+ex() {
+	if [ -f $1 ]; then
+		case $1 in
+		*.tar.bz2) tar xf $1 ;;
+		*.tar.gz) tar xzf $1 ;;
+		*.bz2) bunzip2 $1 ;;
+		*.rar) unrar x $1 ;;
+		*.gz) gunzip $1 ;;
+		*.tar) tar xf $1 ;;
+		*.tbz2) tar xf $1 ;;
+		*.tgz) tar xzf $1 ;;
+		*.zip) unzip $1 ;;
+		*.Z) uncompress $1 ;;
+		*.7z) 7z x $1 ;;
+		*.deb) ar x $1 ;;
+		*.tar.xz) tar xf $1 ;;
+		*.tar.zst) tar xf $1 ;;
+		*) echo "'$1' cannot be extracted via ex()" ;;
+		esac
+	else
+		echo "'$1' is not a valid file"
+	fi
+}
+
+# }}}
+
+
+# Vim options - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# vim: ts=4 sts=4 sw=4 et
+# vim:fileencoding=utf-8:foldmethod=marker

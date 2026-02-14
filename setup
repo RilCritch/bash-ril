@@ -1,0 +1,546 @@
+#!/usr/bin/env bash
+
+# Description ->
+#
+# |- Summary: Bootstrap script for bash-ril configuration
+#             - Installs all critical and important dependencies
+#             - Auto-detects distro and uses appropriate package manager
+#             - Clones scripts-ril repo for custom scripts
+#             - Creates ~/.bashrc symlink with backup
+#
+# |- Dependencies:
+#             - sudo access
+#             - curl (for downloading installers)
+#             - git (for cloning repos)
+
+# Document Info ->
+#
+# |- Author: RilCritch
+#
+# |- Last Update: 02/14/2026
+
+
+# Color output helpers {{{
+
+# Raw ANSI codes (can't source ansi_escape_sequences since config isn't set up yet)
+RED='\033[31m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+CYAN='\033[36m'
+BOLD='\033[1m'
+RESET='\033[0m'
+
+info() {
+    echo -e "${CYAN}==>${RESET} $1"
+}
+
+ok() {
+    echo -e "${GREEN}  ✓${RESET} $1"
+}
+
+warn() {
+    echo -e "${YELLOW}  ⚠${RESET} $1"
+}
+
+err() {
+    echo -e "${RED}  ✗${RESET} $1"
+}
+
+# }}}
+
+
+# Utility functions {{{
+
+# Check if a command exists in PATH
+check_cmd() {
+    command -v "$1" &> /dev/null
+}
+
+# Detect distro and set DISTRO_FAMILY variable
+# Values: "debian", "arch", or empty if unknown
+detect_distro() {
+    if [[ ! -f /etc/os-release ]]; then
+        err "Cannot detect distro: /etc/os-release not found"
+        return 2
+    fi
+
+    # shellcheck source=/dev/null
+    . /etc/os-release
+
+    case "$ID" in
+        debian|ubuntu|linuxmint|pop)
+            DISTRO_FAMILY="debian"
+            ;;
+        arch|endeavouros|manjaro)
+            DISTRO_FAMILY="arch"
+            ;;
+        arcolinux)
+            DISTRO_FAMILY="arch"
+            ;;
+        *)
+            # Check ID_LIKE for derivatives
+            case "$ID_LIKE" in
+                *debian*|*ubuntu*)
+                    DISTRO_FAMILY="debian"
+                    ;;
+                *arch*)
+                    DISTRO_FAMILY="arch"
+                    ;;
+                *)
+                    err "Unsupported distro: $ID (ID_LIKE: $ID_LIKE)"
+                    return 2
+                    ;;
+            esac
+            ;;
+    esac
+
+    ok "Detected distro: $ID (family: $DISTRO_FAMILY)"
+    return 0
+}
+
+# Install packages using the appropriate package manager
+pkg_install() {
+    local pkgs=("$@")
+
+    if [[ ${#pkgs[@]} -eq 0 ]]; then
+        return 0
+    fi
+
+    case "$DISTRO_FAMILY" in
+        debian)
+            info "Installing via apt: ${pkgs[*]}"
+            sudo apt install -y "${pkgs[@]}"
+            ;;
+        arch)
+            info "Installing via pacman: ${pkgs[*]}"
+            sudo pacman -S --needed --noconfirm "${pkgs[@]}"
+            ;;
+        *)
+            err "Unknown DISTRO_FAMILY: $DISTRO_FAMILY"
+            return 2
+            ;;
+    esac
+}
+
+# }}}
+
+
+# Step 1: System prerequisites {{{
+
+step_system_prerequisites() {
+    info "Step 1: Installing system prerequisites..."
+
+    local pkgs=()
+
+    case "$DISTRO_FAMILY" in
+        debian)
+            info "Updating apt cache..."
+            sudo apt update
+            pkgs=(git curl build-essential bash-completion)
+            ;;
+        arch)
+            pkgs=(git curl base-devel bash-completion)
+            ;;
+    esac
+
+    pkg_install "${pkgs[@]}"
+
+    if check_cmd git && check_cmd curl; then
+        ok "System prerequisites installed"
+        return 0
+    else
+        err "Failed to install system prerequisites"
+        return 2
+    fi
+}
+
+# }}}
+
+
+# Step 2: System package tools {{{
+
+step_system_tools() {
+    info "Step 2: Installing system package tools..."
+
+    local pkgs=()
+
+    case "$DISTRO_FAMILY" in
+        debian)
+            pkgs=(fzf fd-find ripgrep nala)
+            ;;
+        arch)
+            pkgs=(fzf fd ripgrep)
+            ;;
+    esac
+
+    pkg_install "${pkgs[@]}"
+
+    # Check fdfind vs fd
+    if check_cmd fdfind; then
+        ok "fdfind installed"
+    elif check_cmd fd; then
+        warn "Found 'fd' but not 'fdfind' (Arch default)"
+        warn "Your bash config uses 'fdfind'. Consider: ln -s \$(which fd) ~/.local/bin/fdfind"
+    else
+        err "Neither fdfind nor fd found"
+    fi
+
+    if check_cmd fzf; then
+        ok "fzf installed"
+    fi
+
+    if check_cmd rg; then
+        ok "ripgrep installed"
+    fi
+
+    if [[ "$DISTRO_FAMILY" == "debian" ]] && check_cmd nala; then
+        ok "nala installed"
+    fi
+
+    return 0
+}
+
+# }}}
+
+
+# Step 3: Homebrew for Linux {{{
+
+step_homebrew() {
+    info "Step 3: Installing Homebrew for Linux..."
+
+    if check_cmd brew; then
+        ok "Homebrew already installed"
+        return 0
+    fi
+
+    info "Installing Homebrew (this may prompt for input)..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    # Add brew to PATH for current session
+    if [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+        ok "Homebrew installed and added to PATH"
+    else
+        err "Homebrew installation may have failed"
+        warn "You may need to run: eval \"\$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\""
+    fi
+
+    return 0
+}
+
+# }}}
+
+
+# Step 4: Rust/Cargo via rustup {{{
+
+step_rust() {
+    info "Step 4: Installing Rust/Cargo via rustup..."
+
+    if check_cmd cargo; then
+        ok "Cargo already installed"
+        return 0
+    fi
+
+    info "Installing rustup (non-interactive)..."
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+    # Source cargo env for current session
+    local cargo_env="${CARGO_HOME:-$HOME/.cargo}/env"
+    if [[ -f "$cargo_env" ]]; then
+        # shellcheck source=/dev/null
+        . "$cargo_env"
+        ok "Rust/Cargo installed and added to PATH"
+    else
+        err "Rust installation may have failed"
+        warn "You may need to run: source ~/.cargo/env"
+    fi
+
+    return 0
+}
+
+# }}}
+
+
+# Step 5: Cargo tools {{{
+
+step_cargo_tools() {
+    info "Step 5: Installing cargo tools (eza, starship)..."
+
+    # Ensure cargo is available
+    if ! check_cmd cargo; then
+        err "Cargo not found, skipping cargo tools"
+        return 2
+    fi
+
+    # eza
+    if check_cmd eza; then
+        ok "eza already installed"
+    else
+        info "Installing eza via cargo..."
+        cargo install eza
+        if check_cmd eza; then
+            ok "eza installed"
+        else
+            err "Failed to install eza"
+        fi
+    fi
+
+    # starship
+    if check_cmd starship; then
+        ok "starship already installed"
+    else
+        info "Installing starship via cargo..."
+        cargo install starship --locked
+        if check_cmd starship; then
+            ok "starship installed"
+        else
+            err "Failed to install starship"
+        fi
+    fi
+
+    return 0
+}
+
+# }}}
+
+
+# Step 6: Homebrew tools {{{
+
+step_homebrew_tools() {
+    info "Step 6: Installing Homebrew tools (lazygit)..."
+
+    if ! check_cmd brew; then
+        warn "Homebrew not found, skipping lazygit"
+        return 0
+    fi
+
+    if check_cmd lazygit; then
+        ok "lazygit already installed"
+        return 0
+    fi
+
+    info "Installing lazygit via brew..."
+    brew install lazygit
+
+    if check_cmd lazygit; then
+        ok "lazygit installed"
+    else
+        err "Failed to install lazygit"
+    fi
+
+    return 0
+}
+
+# }}}
+
+
+# Step 7: Clone scripts-ril {{{
+
+step_clone_scripts() {
+    info "Step 7: Cloning scripts-ril repo..."
+
+    local target_dir="$HOME/Repos/scripts-ril"
+
+    if [[ -d "$target_dir" ]]; then
+        ok "scripts-ril already exists at $target_dir"
+        return 0
+    fi
+
+    # Ensure ~/Repos exists
+    mkdir -p "$HOME/Repos"
+
+    # Test SSH connectivity to GitHub
+    info "Testing SSH connectivity to GitHub..."
+    if ssh -T git@github.com 2>&1 | grep -q "successfully authenticated"; then
+        ok "SSH to GitHub working"
+        info "Cloning scripts-ril via SSH..."
+        git clone git@github.com:RilCritch/scripts-ril.git "$target_dir"
+    else
+        warn "SSH to GitHub not configured"
+        info "Cloning scripts-ril via HTTPS..."
+        git clone https://github.com/RilCritch/scripts-ril.git "$target_dir"
+    fi
+
+    if [[ -d "$target_dir" ]]; then
+        ok "scripts-ril cloned to $target_dir"
+    else
+        err "Failed to clone scripts-ril"
+    fi
+
+    return 0
+}
+
+# }}}
+
+
+# Step 8: Create ~/.bashrc symlink {{{
+
+step_bashrc_symlink() {
+    info "Step 8: Creating ~/.bashrc symlink..."
+
+    local bashrc_target="$HOME/Repos/bash-ril/bashrc"
+    local bashrc_link="$HOME/.bashrc"
+
+    # Verify our bashrc exists
+    if [[ ! -f "$bashrc_target" ]]; then
+        err "Source bashrc not found at $bashrc_target"
+        return 2
+    fi
+
+    # Check if symlink already points to our file
+    if [[ -L "$bashrc_link" ]]; then
+        local current_target
+        current_target=$(readlink -f "$bashrc_link" 2>/dev/null)
+        if [[ "$current_target" == "$bashrc_target" ]]; then
+            ok "~/.bashrc already symlinked to bash-ril/bashrc"
+            return 0
+        fi
+    fi
+
+    # Backup existing ~/.bashrc if it's a regular file
+    if [[ -f "$bashrc_link" ]] && [[ ! -L "$bashrc_link" ]]; then
+        local backup="${bashrc_link}.bak.$(date +%Y%m%d%H%M%S)"
+        cp "$bashrc_link" "$backup"
+        ok "Backed up existing ~/.bashrc to $backup"
+    fi
+
+    # Create symlink
+    ln -sf "$bashrc_target" "$bashrc_link"
+
+    if [[ -L "$bashrc_link" ]]; then
+        ok "Created symlink: ~/.bashrc -> $bashrc_target"
+    else
+        err "Failed to create symlink"
+        return 2
+    fi
+
+    return 0
+}
+
+# }}}
+
+
+# Step 9: Verification summary {{{
+
+step_verify() {
+    info "Step 9: Verification summary"
+    echo
+
+    local all_ok=true
+
+    # Helper to print status
+    check_status() {
+        local name="$1"
+        local cmd="$2"
+        local note="${3:-}"
+
+        if check_cmd "$cmd"; then
+            ok "$name${note:+ ($note)}"
+        else
+            err "$name${note:+ ($note)}"
+            all_ok=false
+        fi
+    }
+
+    # Check tools
+    check_status "git" "git"
+    check_status "curl" "curl"
+    check_status "eza" "eza"
+    check_status "fzf" "fzf"
+    check_status "fdfind" "fdfind" "or fd on Arch"
+    check_status "starship" "starship"
+    check_status "ripgrep" "rg"
+    check_status "lazygit" "lazygit"
+
+    # nala only on Debian
+    if [[ "$DISTRO_FAMILY" == "debian" ]]; then
+        check_status "nala" "nala"
+    fi
+
+    echo
+
+    # Check custom scripts from scripts-ril
+    info "Custom scripts (from scripts-ril):"
+    check_status "across-line" "across-line"
+    check_status "wave-spark" "wave-spark"
+    check_status "clr" "clr"
+    check_status "repo-header" "repo-header"
+
+    echo
+
+    # Check nvim (warn only)
+    if check_cmd nvim; then
+        ok "nvim installed"
+    else
+        warn "nvim not found (install Neovim separately)"
+    fi
+
+    # Check symlink
+    echo
+    info "Bashrc symlink:"
+    if [[ -L "$HOME/.bashrc" ]]; then
+        local link_target
+        link_target=$(readlink -f "$HOME/.bashrc")
+        if [[ "$link_target" == "$HOME/Repos/bash-ril/bashrc" ]]; then
+            ok "~/.bashrc -> $link_target"
+        else
+            err "~/.bashrc points to: $link_target"
+            all_ok=false
+        fi
+    else
+        err "~/.bashrc is not a symlink"
+        all_ok=false
+    fi
+
+    echo
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+    if [[ "$all_ok" == true ]]; then
+        ok "${BOLD}Setup complete!${RESET}"
+        echo
+        echo "  Restart your shell or run: ${CYAN}source ~/.bashrc${RESET}"
+        return 0
+    else
+        warn "Setup completed with some issues"
+        warn "Review the errors above and install missing tools manually"
+        return 2
+    fi
+}
+
+# }}}
+
+
+# Main {{{
+
+main() {
+    echo
+    echo "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
+    echo "${BOLD}  bash-ril Setup Script${RESET}"
+    echo "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
+    echo
+
+    # Detect distro first
+    detect_distro || exit 2
+
+    echo
+
+    # Run all steps
+    step_system_prerequisites
+    step_system_tools
+    step_homebrew
+    step_rust
+    step_cargo_tools
+    step_homebrew_tools
+    step_clone_scripts
+    step_bashrc_symlink
+    step_verify
+}
+
+main "$@"
+
+# }}}
+
+
+# Vim options - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# vim: ts=4 sts=4 sw=4 et
+# vim:fileencoding=utf-8:foldmethod=marker

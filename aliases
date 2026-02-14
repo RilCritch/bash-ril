@@ -1,10 +1,21 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
-# vim:fileencoding=utf-8:foldmethod=marker
-
-# Bash aliases for RilCritch's bashrc
+# Description ->
 #
-# author: RilCritch
+# |- Summary: Universal bash aliases (cross-distro)
+#             - Distro-specific aliases are in modules/
+#
+# |- Dependencies:
+#             - eza
+#             - fzf
+#             - nvim
+#             - lazygit
+
+# Document Info ->
+#
+# |- Author: RilCritch
+#
+# |- Last Update: 02/14/2026
 
 ## terminal fun {{{
 
@@ -52,12 +63,12 @@ alias lfa='eza -fa --icons'
 ## directory navigation {{{
 
 ### Quick Fuzzy Directory Navigation (using function 'd' in bash functions)
-alias docs='d /home/rc/Documents' # document directories
-alias blds='d /home/rc/Builds' # builds direcorties
-alias r='d /home/rc/Repos'
+alias docs="d $HOME/Documents" # document directories
+alias blds="d $HOME/Builds" # builds direcorties
+alias r="d $HOME/Repos"
 
-alias .cfg='d /home/rc/.config' # .config directories
-alias .lcl='d /home/rc/.local' # .local directories
+alias .cfg="d $HOME/.config" # .config directories
+alias .lcl="d $HOME/.local" # .local directories
 
 
 # }}}
@@ -86,12 +97,12 @@ alias cra="clear && sparky | clr blackL && repo-header &&"
 alias fm="nvim -c Oil"
 
 # my corne firmware
-alias keeb="cd /home/rc/.config/qmk/keyboards/crkbd/rev1/keymaps/RilCritch/"
+alias keeb="cd $HOME/.config/qmk/keyboards/crkbd/rev1/keymaps/RilCritch/"
 
 # quick access
 # ansi codes
-alias ansi_escape_codes="nvim /home/rc/Repos/bash-ril/ansi_escape_sequences"
-alias aec="nvim /home/rc/Repos/bash-ril/ansi_escape_sequences"
+alias ansi_escape_codes="nvim $BASH_HOME/ansi_escape_sequences"
+alias aec="nvim $BASH_HOME/ansi_escape_sequences"
 
 # }}}
 
@@ -151,6 +162,9 @@ alias rmpyc="rm -r __pycache__/"
 # deactivate venv
 alias dct="deactivate"
 
+# ai tool aliases
+alias oc-"opencode"
+
 # }}}
 
 ## script utilities {{{
@@ -162,61 +176,22 @@ alias mr="manage-repos"
 
 ## packages {{{
 
-# pacman
-alias pacman='pacman --color auto'
-alias pss='pacman -Ss'                           # search for pkgs
-alias sps='sudo pacman -S'                       # isntall specified pkgs
-alias spr='sudo pacman -R'                       # remove a pkg, safer
-alias sprs='sudo pacman -Rs'                     # remove pkgs and depencies, can be dangerous
-alias spqo='sudo pacman -Qo'                     # determines which pkgs owns a specific file
-alias psyu='sudo pacman -Syu'                    # update only standard pkgs
-alias pacup='sudo pacman -Syyu'                  # refresh pkg list and update standard pkgs on arch
-alias cleanup='sudo pacman -Rns $(pacman -Qtdq)' # remove orphan pkgs
-
-# yay
-alias yss='yay -Ss'   # search for AUR pkgs
-alias ysua='yay -Sua' # update only AUR pkgs
-alias ysyu='yay -Syu' # update standard and AUR pkgs
-
-# paru
-alias pass='paru -Ss'       # search for aur pkgs
-alias pasua='paru -Sua'     # update only AUR pkgs
-alias updateall='paru -Syu' # updates standard and AUR pkgs
-
-# info
-alias listpkg='sudo pacman -Q | fzf'                         # list standard packages
-alias listorph='sudo pacman -Qtd | fzf'                      # list orphaned pkgs
-alias listaur='sudo pacman -Qm | fzf'                        # list AUR pkgs
-alias listpkgsize="expac -H M '%m\t%n' | sort -h | nl | fzf" # reads out pkgs and their sizes
-
 # python
 alias pxi='pipx install' # installing python packages with pipx
 alias pxs='pypisearch'   # searching for python packages
-
-# debian
-alias apt='nala'                                                 # replace apt with nala wrapper
-alias ni='sudo nala install'
-alias nis='sudo nala install --install-suggests'
-alias nib='sudo nala install --fix-broken'
-alias ns='sudo nala search'
-alias nsn='sudo nala search -n'                                    # search for debian packages
-alias nls='sudo nala list -i'
-alias aptup='sudo nala update && sudo nala upgrade'
-# alias aptup='sudo aptitude update && sudo aptitude full-upgrade' # refresh and update debian packages
-
-# flatpak
-alias flls='flatpak list --app --columns=name,application,version'
-alias flla='flatpak list'
-alias flup='flatpak update'
 
 # cargo
 
 # }}}
 
+# NOTE: Distro-specific package aliases (pacman, yay, paru, nala, flatpak)
+# and their FZF functions (pacf, aurf, ddf, flatf) are in modules/
+# and conditionally sourced based on /etc/os-release
+
 ## linux customization {{{
 
 # application for generating a color palette from images
-alias okolors='/home/rc/mydots/applications/okolors -n 3 -l 10,30,50,70 -s l'
+alias okolors="$HOME/mydots/applications/okolors -n 3 -l 10,30,50,70 -s l"
 
 # }}}
 
@@ -325,34 +300,7 @@ alias qc="qtile check"
 
 # }}}
 
-## acrolinux {{{
-
-# applications
-alias adt="arcolinux-desktop-trasher"
-alias abl="arcolinux-betterlockscreen"
-alias agm="arcolinux-get-mirrors"
-alias amr="arcolinux-mirrorlist-rank-info"
-alias aom="arcolinux-osbeck-as-mirror"
-alias ars="arcolinux-reflector-simple"
-alias atm="arcolinux-tellme"
-alias avs="arcolinux-vbox-share"
-alias awa="arcolinux-welcome-app"
-
-# fixes
-alias fix-permissions="sudo chown -R $USER:$USER ~/.config ~/.local"
-alias keyfix="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
-alias key-fix="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
-alias keys-fix="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
-alias fixkey="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
-alias fixkeys="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
-alias fix-key="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
-alias fix-keys="/usr/local/bin/arcolinux-fix-pacman-databases-and-keys"
-alias fix-pacman-conf="/usr/local/bin/arcolinux-fix-pacman-conf"
-alias fix-pacman-keyserver="/usr/local/bin/arcolinux-fix-pacman-gpg-conf"
-alias fix-grub="/usr/local/bin/arcolinux-fix-grub"
-alias fixgrub="/usr/local/bin/arcolinux-fix-grub"
-
-# }}}
+# NOTE: ArcoLinux aliases are in modules/aliases_arcolinux
 
 ## downloading {{{
 

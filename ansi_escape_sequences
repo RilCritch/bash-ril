@@ -1,8 +1,18 @@
 #!/usr/bin/env bash
 
-# Simple set of bash variables to hold ansi escape sequences for my environment
+# Description ->
+#
+# |- Summary: ANSI escape sequence variables for colored terminal output
+#             - Text colors, background colors, and text styles
+#
+# |- Dependencies:
+#             - none
 
-# Author: RilCrith 
+# Document Info ->
+#
+# |- Author: RilCritch
+#
+# |- Last Update: 02/14/2026
 
 # text color ##################################################################
 
@@ -65,3 +75,7 @@ hidden='\033[8m'
 strikethrough='\033[9m'
 
 ###############################################################################
+
+# Vim options - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# vim: ts=4 sts=4 sw=4 et
+# vim:fileencoding=utf-8:foldmethod=marker

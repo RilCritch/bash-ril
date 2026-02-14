@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+
+# Description ->
+#
+# |- Summary: Utility helper functions for bash environment
+#             - Directory validation, number testing, tree size calculation
+#
+# |- Dependencies:
+#             - eza
+
+# Document Info ->
+#
+# |- Author: RilCritch
+#
+# |- Last Update: 02/14/2026
+
+
+# Directory Tests {{{
+
+# Check if argument for dir is empty or a valid dir
+#  This function defaults to the $HOME dir
+# |- Arg 1 is empty: dir -> $HOME
+# |- Arg 1 is Dir:   dir -> $1
+# |- Arg 1 is ! Dir: dir -> "" (empty string denotes failure)
+get-dir-h() {
+    if [[ -z "$1" ]]; then
+        echo "${HOME}"
+    else
+        if [[ -d "$1" ]]; then
+            echo "${1}"
+        else
+            echo ""
+        fi
+    fi
+}
+ 
+# Check if argument for dir is empty or a valid dir
+#  This function defaults to the working directory
+# |- Same as get-dir-c but default is current directory
+get-dir-c() {
+    if [[ -z "$1" ]]; then
+        \pwd
+    else
+        if [[ -d "$1" ]]; then
+            echo "${1}"
+        else
+            echo ""
+        fi
+    fi
+}
+
+# }}}
+
+
+# Tests {{{
+
+# Simple number test
+# 0 -> is a number
+# 1 -> not a number
+is_number() {
+    if [[ "$1" =~ ^-?[0-9]+$ ]]; then
+        echo "0"
+    else
+        echo "1"
+    fi
+}
+
+# }}}
+
+
+# Size Calculations {{{
+
+# Returns the recommended size of a tree
+# |- If a non valid dir is specified pwd is used
+tree-size() {
+    # Arguments
+    local dir_name
+    local extra_lines
+    local term_height
+    local height
+
+    if [[ ! -d "${1}" ]]; then
+        dir_name=$(\pwd)
+    else
+        dir_name="${1}"
+    fi
+
+    if [[ -z $2 ]]; then
+        extra_lines="0"
+    else
+        if [[ "$2" =~ ^-?[0-9]+$ ]]; then
+            extra_lines="$2"
+        else
+            extra_lines="0"
+        fi
+    fi
+
+    term_height=$(tput lines)
+    height=$((term_height - extra_lines))
+
+    if [[ $(\eza -I=".git" -Ta -L=2  "$dir_name" | wc -l) -lt "$height" ]]; then
+        echo "2"
+    elif [[ $(\eza -I=".git" -Ta -L=1  "$dir_name" | wc -l) -lt "$height" ]]; then
+        echo "1"
+    else
+        echo "0"
+    fi
+}
+
+# }}}
+
+
+# Vim options - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# vim: ts=4 sts=4 sw=4 et
+# vim:fileencoding=utf-8:foldmethod=marker

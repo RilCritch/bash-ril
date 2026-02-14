@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
 
-# |- Description ->
-#    - File that sets some useful bash options
+# Description ->
+#
+# |- Summary: Shell options and keybindings for bash
+#             - shopt settings, completion behavior
+#
+# |- Dependencies:
+#             - none
+
+# Document Info ->
+#
+# |- Author: RilCritch
+#
+# |- Last Update: 02/14/2026
 
 # |- Options ->
 

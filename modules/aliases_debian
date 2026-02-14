@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+# Description ->
+#
+# |- Summary: Debian/Ubuntu specific aliases and functions
+#             - nala/apt package management
+#             - FZF package search (ddf)
+#
+# |- Dependencies:
+#             - nala
+#             - apt-cache
+#             - fzf
+
+# Document Info ->
+#
+# |- Author: RilCritch
+#
+# |- Last Update: 02/14/2026
+
+
+# Aliases {{{
+
+alias apt='nala'                                                 # replace apt with nala wrapper
+alias ni='sudo nala install'
+alias nis='sudo nala install --install-suggests'
+alias nib='sudo nala install --fix-broken'
+alias ns='sudo nala search'
+alias nsn='sudo nala search -n'                                    # search for debian packages
+alias nls='sudo nala list -i'
+alias aptup='sudo nala update && sudo nala upgrade'
+# alias aptup='sudo aptitude update && sudo aptitude full-upgrade' # refresh and update debian packages
+
+# }}}
+
+
+# FZF Package Functions {{{
+
+# debian packages
+ddf() {
+    local choice
+
+	choice=$(apt-cache -n search '.*' | awk -F ' - ' '{print $1}' | fzf --height=100% --header-first --reverse --prompt='▶ ' --pointer='󱦰' --multi --preview-window="down" --preview 'apt show {}')
+
+	if [ -n "$choice" ]; then
+		echo "Installing ${choice}" | clr cyan
+	    sudo nala install "${choice}"
+	fi
+
+}
+
+# }}}
+
+
+# Vim options - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# vim: ts=4 sts=4 sw=4 et
+# vim:fileencoding=utf-8:foldmethod=marker
