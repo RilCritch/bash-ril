@@ -160,32 +160,32 @@ dir-overview() {
 
     # output
     if [[ "$tree_height" -eq 0 ]]; then
-        echo -en "${cyan} "
+        echo -en "${cyan} "
         echo -en "${bold}${dir_path}${reset} ${l_black}|"
 
-        echo -en "${reset}  "
+        echo -en "${reset}  "
         echo -en "${dim} ${num_files}${reset} ${l_black}|"
 
-        echo -en "${blue}  "
+        echo -en "${blue}  "
         echo -en "${dim} ${num_dirs}${reset} ${l_black}|"
 
-        echo -en "${cyan}  "
+        echo -en "${cyan}  "
         echo -e "${dim} ${num_links}"
 
         across-line | clr blackL
 
-        eza -a --group-directories-first -I=".git" "$dir_path"
+        eza -a --icons=always --group-directories-first -I=".git" "$dir_path"
     else
-        echo -en "${cyan}  "
+        echo -en "${cyan}  "
         echo -en "${bold}${dir_path}${reset} ${l_black}|"
 
-        echo -en "${reset}  "
+        echo -en "${reset}  "
         echo -en "${dim} ${num_files}${reset} ${l_black}|"
 
-        echo -en "${blue}  "
+        echo -en "${blue}  "
         echo -en "${dim} ${num_dirs}${reset} ${l_black}|"
 
-        echo -en "${cyan}  "
+        echo -en "${cyan}  "
         echo -e "${dim} ${num_links}"
 
         dir_length=${#dir_path}
@@ -200,7 +200,7 @@ dir-overview() {
             echo -n "━"
         done
         echo
-	    eza -Ta -L="$tree_height" --group-directories-first -I=".git" "$dir_path" | awk 'NR > 1'
+	    eza -Ta --icons=always -L="$tree_height" --group-directories-first -I=".git" "$dir_path" | awk 'NR > 1'
     fi
 }
 

@@ -163,7 +163,7 @@ alias rmpyc="rm -r __pycache__/"
 alias dct="deactivate"
 
 # ai tool aliases
-alias oc-"opencode"
+alias oc="opencode"
 
 # }}}
 
