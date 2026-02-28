@@ -65,6 +65,12 @@ esac
 [[ "${ID}" == "arcolinux" ]] && \
     [[ -f "${BASH_HOME}/modules/aliases_arcolinux" ]] && . "${BASH_HOME}/modules/aliases_arcolinux"
 
+# Load local secrets (not in git)
+if [ -f "$HOME/.secrets/exa.env" ]; then
+  # shellcheck disable=SC1090
+  source "$HOME/.secrets/exa.env"
+fi
+
 # starship | prompt
 eval "$(starship init bash)"
 
@@ -85,3 +91,7 @@ sparky | clr cyanL && lineacross | clr blackL
 # Vim options - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # vim: ts=4 sts=4 sw=4 et
 # vim:fileencoding=utf-8:foldmethod=marker
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

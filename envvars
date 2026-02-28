@@ -62,6 +62,7 @@ export WEZTERM_CONFIG_FILE="${HOME}/.config/wezterm/wezterm.lua"
 
 export EZA_ICON_SPACING=1
 export STARSHIP_LOG="error"
+export OPENCODE_ENABLE_EXA=1
 
 # }}}
 
@@ -70,6 +71,7 @@ export STARSHIP_LOG="error"
 export HISTFILE="${XDG_STATE_HOME}/bash/history"
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"
 export RUSTUP_HOME="${XDG_DATA_HOME}/rustup"
+[[ -f "${XDG_DATA_HOME}/cargo/env" ]] && . "${XDG_DATA_HOME}/cargo/env"
 export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 export GOPATH="${XDG_DATA_HOME}/go"
 export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc"

@@ -26,6 +26,7 @@ BUILD_DIR="${HOME}/Builds"
 [[ -f "${BASH_COMP}/gita-completion.bash" ]] && . "${BASH_COMP}/gita-completion.bash"
 [[ -f "${HOME}/Builds/qmk_firmware/util/qmk_tab_complete.sh" ]] && . "${HOME}/Builds/qmk_firmware/util/qmk_tab_complete.sh"
 [[ -f "${BASH_COMP}/girok.sh" ]] && . "${BASH_COMP}/girok.sh"
+[[ -f "${BASH_COMP}/opencode.bash" ]] && . "${BASH_COMP}/opencode.bash"
 
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 

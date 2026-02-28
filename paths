@@ -40,8 +40,6 @@ pathadd "${HOME}/Repos/scripts-ril/color-scripts"
 pathadd "/usr/local/go/bin"
 pathadd "${HOME}/.local/share/go/bin"
 pathadd "${HOME}/Builds/bat-extras/bin"
-pathadd "${HOME}/.local/share/cargo/env"
-pathadd "${HOME}/.local/share/cargo/bin"
 pathadd "${HOME}/.local/share/npm/bin"
 pathadd "${HOME}/.juliaup/bin"
 
